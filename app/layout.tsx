@@ -10,6 +10,10 @@ import { ThemeProvider } from "@/components/theme-provider"
 import Navbar from '@/components/Navbar'
 import { AuthContextProvider } from '@/context/AuthContext'
 import MoneriumContextProvider from '@/context/MoneriumContex'
+import { WagmiConfig, createConfig } from 'wagmi';
+import { sepolia } from 'wagmi/chains';
+import { ConnectKitProvider, getDefaultConfig } from 'connectkit';
+
 
 export const metadata: Metadata = {
   title: {
@@ -33,6 +37,17 @@ interface RootLayoutProps {
 }
 
 export default function RootLayout({ children }: RootLayoutProps) {
+
+  const config = createConfig(
+    getDefaultConfig({
+      appName: 'PaywithGHO',
+      //infuraId: process.env.NEXT_PUBLIC_INFURA_ID,
+      alchemyId:  process.env.NEXT_PUBLIC_APP_ALCHEMY_ID,
+      chains: [ sepolia],
+      walletConnectProjectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID!,
+    })
+  );
+
   return (
     <>
       <html lang="en" suppressHydrationWarning>
@@ -44,6 +59,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
           )}
         >
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <WagmiConfig config={config}>
+            <ConnectKitProvider debugMode>
             <div className="relative flex min-h-screen flex-col">
               <SiteHeader />
               <AuthContextProvider>
@@ -54,6 +71,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
                 </AuthContextProvider>
             </div>
             <TailwindIndicator />
+            </ConnectKitProvider>
+            </WagmiConfig>
           </ThemeProvider>
         </body>
       </html>

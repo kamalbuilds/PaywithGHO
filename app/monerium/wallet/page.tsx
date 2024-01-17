@@ -131,6 +131,7 @@ const MoneriumWallet = () => {
             amount,
             counterpart: {
                 identifier: {
+                    // @ts-ignore
                     standard: 'iban' as PaymentStandard.iban,
                     iban
                 },

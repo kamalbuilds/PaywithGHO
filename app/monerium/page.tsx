@@ -161,6 +161,7 @@ const MoneriumPage = () => {
             currency: Currency.eur,
             counterpart: {
                 identifier: {
+                    // @ts-ignore
                     standard: 'iban' as PaymentStandard.iban,
                     iban
                 },

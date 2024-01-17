@@ -2,9 +2,6 @@
 import { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 
-function classNames(...classes) {
-    return classes.filter(Boolean).join(' ')
-}
 
 export default function Dropdown({
     chains,
@@ -31,7 +28,7 @@ export default function Dropdown({
                 leaveTo="transform opacity-0 scale-95"
             >
                 <Menu.Items className="absolute flex flex-col p-1 right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                    {chains.map((chain) => (
+                    {chains.map((chain : any) => (
                         /* Use the `active` state to conditionally style the active item. */
                         <Menu.Item key={chain.chainId} as={Fragment}>
                             {({ active }) => (

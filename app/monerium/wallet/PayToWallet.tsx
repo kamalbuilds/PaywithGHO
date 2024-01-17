@@ -13,8 +13,8 @@ const PayToWallet = ({
     const { isLoggedIn, selectedSafe, provider: authProvider } = useAuth()
 
     const [chainSelected, setChainSelected] = useState<any>();
-    const [receiverWalletAddress, setReceiverWalletAddress] = useState<string>();
-    const [amount, setAmount] = useState<number>();
+    const [receiverWalletAddress, setReceiverWalletAddress] = useState<string>('');
+    const [amount, setAmount] = useState<number>(0);
 
     const chains = [
         { chainId: 80001, name: 'polygon', network: 'mumbai' },

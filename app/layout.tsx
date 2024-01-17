@@ -13,7 +13,7 @@ import MoneriumContextProvider from '@/context/MoneriumContex'
 import { WagmiConfig, createConfig } from 'wagmi';
 import { sepolia } from 'wagmi/chains';
 import { ConnectKitProvider, getDefaultConfig } from 'connectkit';
-
+import ClientLayout from './Web3Provider';
 
 export const metadata: Metadata = {
   title: {
@@ -59,8 +59,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           )}
         >
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <WagmiConfig config={config}>
-            <ConnectKitProvider debugMode>
+            <ClientLayout>
             <div className="relative flex min-h-screen flex-col">
               <SiteHeader />
               <AuthContextProvider>
@@ -71,8 +70,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
                 </AuthContextProvider>
             </div>
             <TailwindIndicator />
-            </ConnectKitProvider>
-            </WagmiConfig>
+            </ClientLayout>
           </ThemeProvider>
         </body>
       </html>

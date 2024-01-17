@@ -5,7 +5,7 @@ import Safe, { EthersAdapter } from '@safe-global/protocol-kit'
 import { MoneriumPack, SafeMoneriumClient } from '@safe-global/onramp-kit'
 import { AuthContext, Currency, OrderState, PaymentStandard, placeOrderMessage } from '@monerium/sdk'
 import { useAuth } from '@/context/AuthContext';
-import LoginWithMonerium from './LoginwithMonerium';
+import LoginWithMonerium from './LoginWithMonerium';
 import Connected from './Connected';
 
 const MONERIUM_TOKEN = 'monerium_token'

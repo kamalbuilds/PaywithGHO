@@ -6,7 +6,8 @@ import {
     AuthKitSignInData,
     SafeAuthInitOptions,
 } from '@safe-global/auth-kit'
-import { ethers } from "ethers";
+import { BrowserProvider, Eip1193Provider, ethers } from "ethers";
+import { EthersAdapter, SafeFactory } from "@safe-global/protocol-kit";
 
 type AuthContextProviderProps = {
     children: React.ReactNode
@@ -17,9 +18,12 @@ type AuthContextType = {
     provider: ethers.Eip1193Provider | null
     data?: AuthKitSignInData
     selectedSafe: string
+    isSafeLoading?: boolean
     setSelectedSafe?: (safe: string) => void
     logIn?: () => void
     logOut?: () => void
+    deployNewSafeWallet?: () => void
+
 }
 
 export const AuthContext = createContext<AuthContextType>({
@@ -36,21 +40,31 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
     const [provider, setProvider] = useState<ethers.Eip1193Provider | null>()
     const [selectedSafe, setSelectedSafe] = useState('')
 
+    const [isSafeLoading, setIsSafeLoading] = useState<boolean>(false);
+
     useEffect(() => {
         ; (async () => {
+            setIsSafeLoading(true);
             const authPack = new SafeAuthPack()
 
             const options: SafeAuthInitOptions = {
                 enableLogging: false,
                 showWidgetButton: true,
-                chainConfig: { chainId: '0x5', rpcTarget: 'https://eth-goerli.g.alchemy.com/v2/F1Pki8Inoa2E7rVheYmIEBQU-VA2tpv8' }
+                chainConfig: {
+                    // chainId: '0xaa36a7', 
+                    chainId: '0x5',
+                    // rpcTarget: 'https://eth-sepolia.g.alchemy.com/v2/DU0xK0nck0Bt7hWgodif5n_UctwzaX5R' 
+                    rpcTarget: 'https://eth-goerli.g.alchemy.com/v2/F1Pki8Inoa2E7rVheYmIEBQU-VA2tpv8'
+                }
             }
 
             await authPack.init(options)
 
             setSafeAuthPack(authPack)
 
+
             authPack.subscribe('accountsChanged', async (accounts: string[]) => {
+                console.log("Accounts changed", accounts);
                 if (accounts.length > 0) {
                     const signInInfo = await authPack?.signIn()
 
@@ -62,6 +76,8 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
                     }
                 }
             })
+
+            setIsSafeLoading(false);
         })()
     }, [])
 
@@ -93,6 +109,31 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
         setIsAuthenticated(false)
     }
 
+    const deployNewSafeWallet = async () => {
+        if (!safeAuthPack) return
+
+        const provider = new BrowserProvider(safeAuthPack?.getProvider() as Eip1193Provider);
+        const signer = await provider.getSigner();
+
+        const ethAdapter = new EthersAdapter({
+            ethers,
+            signerOrProvider: signer,
+        } as any);
+
+        const safeFactory = await SafeFactory.create({ ethAdapter });
+        const safe = await safeFactory.deploySafe({
+            safeAccountConfig: { threshold: 1, owners: [safeAuthSignInResponse?.eoa as string] },
+        });
+
+        console.log("SAFE Created!", await safe.getAddress());
+
+        const safeAddress = await safe.getAddress();
+        if (safeAddress) {
+            setSelectedSafe(safeAddress)
+        }
+
+    }
+
 
     return (
         <AuthContext.Provider
@@ -103,7 +144,9 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
                 logIn,
                 logOut,
                 selectedSafe,
-                setSelectedSafe
+                setSelectedSafe,
+                deployNewSafeWallet,
+                isSafeLoading
             }}
         >
             {children}

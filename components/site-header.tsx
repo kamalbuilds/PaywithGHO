@@ -12,7 +12,9 @@ import Address from './Address';
 
 export function SiteHeader() {
 
-  const { logIn, logOut, isLoggedIn, data, selectedSafe, setSelectedSafe } = useAuth();
+  const { logIn, logOut, isLoggedIn, data, deployNewSafeWallet, selectedSafe, setSelectedSafe } = useAuth();
+
+  console.log("Data", data);
 
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background">
@@ -20,35 +22,30 @@ export function SiteHeader() {
         <MainNav items={siteConfig.mainNav} />
         <div className="flex flex-1 items-center justify-end space-x-4">
           <nav className="flex items-center space-x-1">
-            <Link
-              href={siteConfig.links.github}
-              target="_blank"
-              rel="noreferrer"
-            >
-              <div
-                className={buttonVariants({
-                  size: "icon",
-                  variant: "ghost",
-                })}
-              >
-                <Icons.gitHub className="h-5 w-5" />
-                <span className="sr-only">GitHub</span>
-              </div>
-            </Link>
-            {isLoggedIn ? (
-                <>
-                    {data && <Address address={data.eoa} />}
+            {isLoggedIn && data ? (
+              <>
+                {/* {data && <Address address={data.eoa} />} */}
 
-                    <div className='border rounded-lg border-gray-600 px-2 py-1 my-4 cursor-pointer' onClick={logOut}>
-                        Sign out
-                    </div>
-                </>
+                {selectedSafe ? (
+                  <>
+                    <Address address={data.safes[0]} />
+                  </>
+                ) : (
+                  <div onClick={deployNewSafeWallet} className='border px-2 py-1 my-4 border-gray-600 rounded-md'>
+                    Deploy Safe
+                  </div>
+                )}
+
+                <div className='border rounded-lg border-gray-600 px-2 py-1 my-4 cursor-pointer' onClick={logOut}>
+                  Sign out
+                </div>
+              </>
             ) : (
-                <>
-                    <div className='border rounded-lg border-gray-600 px-2 py-1 my-4 cursor-pointer' onClick={logIn}>
-                        Sign in
-                    </div>
-                </>
+              <>
+                <div className='border rounded-lg border-gray-600 px-2 py-1 my-4 cursor-pointer' onClick={logIn}>
+                  Sign in
+                </div>
+              </>
             )}
             <ThemeToggle />
           </nav>

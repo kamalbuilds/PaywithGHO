@@ -4,8 +4,6 @@ const CHAR_DISPLAYED = 6
 
 const Address = ({ address }: any) => {
 
-    console.log("Address", address);
-
     const firstPart = address.slice(0, CHAR_DISPLAYED)
     const lastPart = address.slice(address.length - CHAR_DISPLAYED)
 

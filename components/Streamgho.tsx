@@ -1,3 +1,5 @@
+"use client";
+
 import { useMemo } from "react"
 import superTokenList from "@superfluid-finance/tokenlist"
 import SuperfluidWidget, {
@@ -18,6 +20,44 @@ export function Streamgho() {
     [open, setOpen]
   )
 
+  const mytokenlist =   {
+    "name": "Superfluid Token List",
+    "version": {
+      "major": 2,
+      "minor": 3,
+      "patch": 0
+    },
+    "timestamp": "2023-10-20T08:18:44.184Z",
+    "tokens": [
+      {
+        "address": "0x22064a21fee226d8ffb8818e7627d5ff6d0fc33a",
+        "name": "Super GHO Token",
+        "symbol": "GHOx",
+        "decimals": 18,
+        "chainId": 11155111,
+        "extensions": {
+          "superTokenInfo": {
+            "type": "Wrapper",
+            "underlyingTokenAddress": "0xc4bf5cbdabe595361438f8c6a187bdc330539c60"
+          }
+        },
+        "logoURI": "https://raw.githubusercontent.com/superfluid-finance/assets/master/public/tokens/gho/icon.svg",
+        "tags": ["supertoken", "tier_a"]
+      },
+      
+        {
+          "address": "0xc4bf5cbdabe595361438f8c6a187bdc330539c60",
+          "name": "GHO Token",
+          "symbol": "GHO",
+          "decimals": 18,
+          "chainId": 11155111,
+          "logoURI": "https://raw.githubusercontent.com/superfluid-finance/assets/master/public/tokens/gho/icon.svg",
+          "tags": ["underlying"]
+        },
+      
+    ]
+  };
+
   const data = {
     productDetails: {
       name: "PaywithGHO",
@@ -31,7 +71,7 @@ export function Streamgho() {
           receiverAddress: "0xF26Ce9749f29E61c25d0333bCE2301CB2DFd3a22",
           chainId: 11155111,
           superToken: {
-            address: "0x30a6933Ca9230361972E413a15dC8114c952414e",
+            address: "0x22064a21fee226d8ffb8818e7627d5ff6d0fc33a",
           },
         },
       ],
@@ -42,12 +82,13 @@ export function Streamgho() {
   return (
     <SuperfluidWidget
       {...data}
-      tokenList={superTokenList}
+      // @ts-ignore
+      tokenList={mytokenlist}
       type="dialog"
       walletManager={walletManager}
     >
       {({ openModal }) => (
-        <button onClick={() => openModal()}>Open Superfluid Widget</button>
+        <button onClick={() => openModal()}>Stream GHO as Payments</button>
       )}
     </SuperfluidWidget>
   )

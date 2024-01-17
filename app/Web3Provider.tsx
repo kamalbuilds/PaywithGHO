@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 // import { SiweMessage } from 'siwe'
 import { FC, PropsWithChildren } from 'react'

@@ -16,7 +16,7 @@ type AuthContextProviderProps = {
 
 type AuthContextType = {
     isLoggedIn: boolean
-    provider: ethers.Eip1193Provider | null
+    provider: ethers.providers.Web3Provider | null
     data?: AuthKitSignInData
     selectedSafe: string
     isSafeLoading?: boolean
@@ -38,7 +38,7 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
     const [safeAuthPack, setSafeAuthPack] = useState<SafeAuthPack>()
     const [isAuthenticated, setIsAuthenticated] = useState(!!safeAuthPack?.isAuthenticated)
     const [safeAuthSignInResponse, setSafeAuthSignInResponse] = useState<AuthKitSignInData>()
-    const [provider, setProvider] = useState<ethers.Eip1193Provider | null>()
+    const [provider, setProvider] = useState<ethers.providers.Web3Provider | null>()
     const [selectedSafe, setSelectedSafe] = useState('')
 
     const [isSafeLoading, setIsSafeLoading] = useState<boolean>(false);

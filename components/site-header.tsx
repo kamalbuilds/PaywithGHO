@@ -28,7 +28,7 @@ export function SiteHeader() {
 
                 {selectedSafe ? (
                   <>
-                    <Address address={data.safes[0]} />
+                    { data.safes && <Address address={data.safes[0]} /> }
                   </>
                 ) : (
                   <div onClick={deployNewSafeWallet} className='border px-2 py-1 my-4 border-gray-600 rounded-md'>

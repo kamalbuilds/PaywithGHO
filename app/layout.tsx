@@ -10,6 +10,8 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { AuthContextProvider } from '@/context/AuthContext';
 import MoneriumContextProvider from '@/context/MoneriumContex';
 import ClientLayout from './Web3Provider';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 
 export const metadata: Metadata = {
   title: {
@@ -50,6 +52,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
               <AuthContextProvider>
               <MoneriumContextProvider>
               <SiteHeader />
+              <ToastContainer />
               <div className="flex-1">{children}</div>
                 </MoneriumContextProvider>
                 </AuthContextProvider>

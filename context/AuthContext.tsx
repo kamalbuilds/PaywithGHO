@@ -6,8 +6,9 @@ import {
     AuthKitSignInData,
     SafeAuthInitOptions,
 } from '@safe-global/auth-kit'
-import { BrowserProvider, Eip1193Provider, ethers } from "ethers";
-import { EthersAdapter, SafeFactory } from "@safe-global/protocol-kit";
+import Safe, { SafeFactory, SafeAccountConfig, Web3Adapter, EthersAdapter } from '@safe-global/protocol-kit';
+import { Web3Provider } from "@ethersproject/providers";
+import { ethers } from "ethers";
 
 type AuthContextProviderProps = {
     children: React.ReactNode
@@ -15,7 +16,7 @@ type AuthContextProviderProps = {
 
 type AuthContextType = {
     isLoggedIn: boolean
-    provider: ethers.Eip1193Provider | null
+    provider: ethers.providers.Web3Provider | null
     data?: AuthKitSignInData
     selectedSafe: string
     isSafeLoading?: boolean
@@ -37,7 +38,7 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
     const [safeAuthPack, setSafeAuthPack] = useState<SafeAuthPack>()
     const [isAuthenticated, setIsAuthenticated] = useState(!!safeAuthPack?.isAuthenticated)
     const [safeAuthSignInResponse, setSafeAuthSignInResponse] = useState<AuthKitSignInData>()
-    const [provider, setProvider] = useState<ethers.Eip1193Provider | null>()
+    const [provider, setProvider] = useState<ethers.providers.Web3Provider | null>()
     const [selectedSafe, setSelectedSafe] = useState('')
 
     const [isSafeLoading, setIsSafeLoading] = useState<boolean>(false);
@@ -112,18 +113,43 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
     const deployNewSafeWallet = async () => {
         if (!safeAuthPack) return
 
-        const provider = new BrowserProvider(safeAuthPack?.getProvider() as Eip1193Provider);
+        const provider = new Web3Provider(safeAuthPack?.getProvider());
         const signer = await provider.getSigner();
+
+        console.log("Provider", provider, signer);
 
         const ethAdapter = new EthersAdapter({
             ethers,
             signerOrProvider: signer,
         } as any);
 
-        const safeFactory = await SafeFactory.create({ ethAdapter });
+        const safeFactory: Safe = await SafeFactory.create({ ethAdapter });
+
         const safe = await safeFactory.deploySafe({
             safeAccountConfig: { threshold: 1, owners: [safeAuthSignInResponse?.eoa as string] },
         });
+        console.log("SAFE Created!", await safe.getAddress());
+
+
+
+
+        // console.log(Safe);
+        // const safeFactory = await SafeFactory.create({ ethAdapter })
+
+        // const owners = ['0x<address>', '0x<address>', '0x<address>']
+        // const threshold = 3
+        // const safeAccountConfig: SafeAccountConfig = {
+        //     owners,
+        //     threshold
+        //     //   to, // Optional
+        //     //   data, // Optional
+        //     //   fallbackHandler, // Optional
+        //     //   paymentToken, // Optional
+        //     //   payment, // Optional
+        //     //   paymentReceiver // Optional
+        // }
+
+        // const safe: Safe = await safeFactory.deploySafe({ safeAccountConfig })
 
         console.log("SAFE Created!", await safe.getAddress());
 

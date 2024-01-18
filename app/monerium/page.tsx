@@ -75,7 +75,7 @@ const MoneriumPage = () => {
 
     useEffect(() => {
         if(!window ) return
-        const authCode = new URLSearchParams(window.location.search).get('code') || undefined
+        const authCode = new URLSearchParams(window?.location.search).get('code') || undefined
         const refreshToken = localStorage.getItem(MONERIUM_TOKEN) || undefined
 
         if (authCode || refreshToken) startMoneriumFlow(authCode, refreshToken)

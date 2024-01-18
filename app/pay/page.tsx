@@ -9,6 +9,7 @@ import LoginWithMonerium from './LoginWithMonerium';
 import IbanDetails from './ibanDetails';
 import PayForm from './PayForm';
 import { buttonVariants } from '@/components/ui/button';
+import { toast } from 'react-toastify';
 
 const MONERIUM_TOKEN = 'monerium_token'
 
@@ -31,13 +32,15 @@ const PayPage = () => {
 
     const [isLoading, setisLoading] = useState<boolean>(false);
 
+    const notify = () => toast.success("Safe Deployed!");
     useEffect(() => {
         ; (async () => {
             if (!authProvider || !selectedSafe) return
 
             const provider = new ethers.providers.Web3Provider(authProvider)
 
-            const safeOwner = await provider.getSigner()
+            const safeOwner = await provider.getSigner();
+            
             const ethAdapter = new EthersAdapter({ ethers, signerOrProvider: safeOwner })
 
             const safeSdk = await Safe.create({
@@ -168,6 +171,7 @@ const PayPage = () => {
                                 <div className={buttonVariants()}>
                                     Deploy Safe
                                 </div>
+                                <button onClick={notify} >toast</button>
                             </div>
                         </div>}
 

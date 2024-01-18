@@ -1,15 +1,41 @@
+import useMemoizedAddressLabel from '@/hooks/useMemoizedAddressLabel';
 import React from 'react';
+import { MdOpenInNew } from "react-icons/md";
+import { AiOutlineCopy } from "react-icons/ai";
+import { ImNewTab } from "react-icons/im";
+import Link from 'next/link';
 
-const CHAR_DISPLAYED = 6
+const Address = ({
+    address,
+    isTransactionAddress,
+    showBlockExplorerLink,
+    useFullAddress = false,
+    showCopyIntoClipboardButton = true
+}: any) => {
 
-const Address = ({ address }: any) => {
-
-    const firstPart = address?.slice(0, CHAR_DISPLAYED)
-    const lastPart = address?.slice(address?.length - CHAR_DISPLAYED)
+    const addressLabel = useMemoizedAddressLabel(address);
+    const blockExplorerLink = `https://goerli.etherscan.io/${isTransactionAddress ? 'tx' : 'address'
+        }/${address}`
 
     return (
-        <div className='border px-2 py-1 my-4 border-gray-600 rounded-md'>
-            {firstPart}...{lastPart}
+        <div className='flex flex-row gap-1 items-center'>
+            <span>{useFullAddress ? address : addressLabel}</span>
+            {showBlockExplorerLink && blockExplorerLink && (
+                <Link target='_blank' href={blockExplorerLink}><MdOpenInNew /></Link>
+            )}
+
+            {showCopyIntoClipboardButton && (
+                <div onClick={() => navigator?.clipboard?.writeText?.(address)}>
+                    <AiOutlineCopy />
+                </div>)}
+
+            {/* {enableTransaction && (
+                <Link href={`/transactions/${address}`}>
+                    {<ImNewTab />}
+                </Link>
+
+            )} */}
+
         </div>
     );
 };

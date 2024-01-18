@@ -24,11 +24,19 @@ export function SiteHeader() {
           <nav className="flex items-center space-x-1">
             {isLoggedIn && data ? (
               <>
-                {/* {data && <Address address={data.eoa} />} */}
 
                 {selectedSafe ? (
                   <>
-                    { data.safes && <Address address={data.safes[0]} /> }
+                    {/* {data.safes && (
+                      <div className='border px-2 py-1 my-4 border-gray-600 rounded-md'>
+                        <Address address={data.safes[0]} showBlockExplorerLink />
+                      </div>
+                    )} */}
+                    {data.eoa && (
+                      <div className='border px-2 py-1 my-4 border-gray-600 rounded-md'>
+                        <Address address={data.eoa} showBlockExplorerLink />
+                      </div>
+                    )}
                   </>
                 ) : (
                   <div onClick={deployNewSafeWallet} className='border px-2 py-1 my-4 border-gray-600 rounded-md'>
@@ -36,9 +44,9 @@ export function SiteHeader() {
                   </div>
                 )}
 
-                <div onClick={deployNewSafeWallet} className='border px-2 py-1 my-4 border-gray-600 rounded-md'>
+                {/* <div onClick={deployNewSafeWallet} className='border px-2 py-1 my-4 border-gray-600 rounded-md cursor-pointer'>
                   Deploy Safe
-                </div>
+                </div> */}
 
                 <div className='border rounded-lg border-gray-600 px-2 py-1 my-4 cursor-pointer' onClick={logOut}>
                   Sign out

@@ -76,14 +76,13 @@ const PayForm = ({
 
     return (
         <div className='px-4'>
-            <h1></h1>
 
-            <div className='flex justify-end'>
+            <div className='flex justify-end my-4'>
                 <button className={buttonVariants()} onClick={closeMoneriumFlow}>Log Out Memorium</button>
             </div>
 
             <div className='flex justify-center items-center'>
-                <div className='flex flex-col gap-2'>
+                <div className='flex flex-col gap-4 border border-[#c4c1c1] px-[30px] py-[30px] rounded-[20px] '>
                     <div className='flex flex-row gap-2'>
                         <Input
                             value={firstName}

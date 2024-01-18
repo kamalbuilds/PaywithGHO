@@ -30,16 +30,20 @@ const PayPage = () => {
     const [balances, setBalances] = useState<Balances[]>();
     const [orders, setOrders] = useState<Order[]>();
 
-    const [isLoading, setisLoading] = useState<boolean>(false);
+    const [loadingIBAN, setIsLoadingIBAN] = useState<boolean>(false);
+    const [settingMonerium, setSettingMonerium] = useState<boolean>(false);
 
     const notify = () => toast.success("Safe Deployed!");
+
     useEffect(() => {
+        console.log("Auth Provider and selected safe", authProvider, selectedSafe);
         ; (async () => {
             if (!authProvider || !selectedSafe) return
 
-            const provider = new ethers.providers.Web3Provider(authProvider)
+            setSettingMonerium(true);
+            // const provider = new ethers.providers.Web3Provider(authProvider)
 
-            const safeOwner = await provider.getSigner();
+            const safeOwner = await authProvider.getSigner();
 
             // const ethAdapter = new EthersAdapter({ ethers, signerOrProvider: safeOwner })
 
@@ -73,6 +77,7 @@ const PayPage = () => {
 
             console.log("Monerium Pack 2", pack);
             setMoneriumPack(pack)
+            setSettingMonerium(false);
 
             pack.subscribe(OrderState.pending, (notification) => {
                 console.log("State is pending.....")
@@ -101,6 +106,7 @@ const PayPage = () => {
             const owners = await safeSdk.getOwners()
 
             setSafeThreshold(`${threshold}/${owners.length}`)
+
         })()
     }, [authProvider, selectedSafe])
 
@@ -108,16 +114,17 @@ const PayPage = () => {
         const authCode = new URLSearchParams(window.location.search).get('code') || undefined
         const refreshToken = localStorage.getItem(MONERIUM_TOKEN) || undefined
 
-        console.log("Authc ode and token", authCode, refreshToken);
+        console.log("Auth code and token", authCode, refreshToken);
 
         if (authCode || refreshToken) startMoneriumFlow(authCode, refreshToken)
     }, [moneriumPack])
 
     const startMoneriumFlow = async (authCode?: string, refreshToken?: string) => {
         console.log("Monerium pack", moneriumPack);
-        setisLoading(true);
+
         if (!moneriumPack) return
 
+        setIsLoadingIBAN(true);
         console.log("Pack is starting....")
         // const moneriumClient = await moneriumPack?.open({});
 
@@ -153,7 +160,7 @@ const PayPage = () => {
 
         setMoneriumClient(moneriumClient)
         setAuthContext(authContext)
-        setisLoading(false);
+        setIsLoadingIBAN(false);
     }
 
     const closeMoneriumFlow = async () => {
@@ -165,50 +172,62 @@ const PayPage = () => {
 
     return (
         <>
-            {isLoggedIn ? <div>
+            {isLoggedIn ? <div className='mt-12'>
 
                 <div className='flex items-center justify-center text-4xl font-medium text-muted-foreground'>Pay with IBAN</div>
 
-                {!isLoading && authContext ? (
-                    <div className='flex flex-col gap-8'>
-                        <PayForm
-                            moneriumClient={moneriumClient}
-                            closeMoneriumFlow={closeMoneriumFlow}
-                            protocolKit={protocolKit}
-                            moneriumPack={moneriumPack}
-                        />
-                        <IbanDetails
-                            authContext={authContext}
-                            profile={profile}
-                            balances={balances}
-                            orders={orders}
-                        />
+                {settingMonerium ? (
+                    <div className='flex items-center justify-center mt-4'>Setting Monerium Pack...</div>
+                ) : loadingIBAN ? (
+                    <div className='flex items-center justify-center'>
+                        Loading IBAN...
                     </div>
                 ) : (
                     <>
-                        {!selectedSafe && <div className='flex '>
-                            <div className='flex flex-col gap-2'>
-                                <div className='text-xl'>Safe is not deployed. Deploy a new oner</div>
-                                <div className={buttonVariants()}>
-                                    Deploy Safe
-                                </div>
-                                <button onClick={notify} >toast</button>
+                        {authContext ? (
+                            <div className='flex flex-col gap-20'>
+                                <PayForm
+                                    moneriumClient={moneriumClient}
+                                    closeMoneriumFlow={closeMoneriumFlow}
+                                    protocolKit={protocolKit}
+                                    moneriumPack={moneriumPack}
+                                />
+                                <IbanDetails
+                                    authContext={authContext}
+                                    profile={profile}
+                                    balances={balances}
+                                    orders={orders}
+                                />
                             </div>
-                        </div>}
+                        ) : (
+                            <>
+                                {!selectedSafe && <div className='flex '>
+                                    <div className='flex flex-col gap-2'>
+                                        <div className='text-xl'>Safe is not deployed. Deploy a new oner</div>
+                                        <div className={buttonVariants()}>
+                                            Deploy Safe
+                                        </div>
+                                        <button onClick={notify} >toast</button>
+                                    </div>
+                                </div>}
 
-                        {selectedSafe && (
-                            <LoginWithMonerium
-                                safe={selectedSafe}
-                                threshold={safeThreshold || ''}
-                                onLogin={() => startMoneriumFlow()}
-                            />
+                                {selectedSafe && (
+                                    <LoginWithMonerium
+                                        safe={selectedSafe}
+                                        threshold={safeThreshold || ''}
+                                        onLogin={() => startMoneriumFlow()}
+                                    />
+                                )}
+
+
+                            </>
                         )}
-
-
                     </>
                 )}
 
-            </div> : <div> Safe Data is Loading....</div>}
+            </div> : (
+                <div className='flex items-center justify-center mt-12'> You need to log In to Safe to access this.</div>
+            )}
         </>
     );
 };

@@ -9,6 +9,7 @@ import {
 import Safe, { SafeFactory, SafeAccountConfig, Web3Adapter, EthersAdapter } from '@safe-global/protocol-kit';
 import { Web3Provider } from "@ethersproject/providers";
 import { ethers } from "ethers";
+import { toast } from "react-toastify";
 
 type AuthContextProviderProps = {
     children: React.ReactNode
@@ -50,6 +51,7 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
 
             const options: SafeAuthInitOptions = {
                 enableLogging: false,
+                buttonPosition: 'bottom-right',
                 showWidgetButton: true,
                 chainConfig: {
                     // chainId: '0xaa36a7', 
@@ -112,10 +114,9 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
 
     const deployNewSafeWallet = async () => {
         if (!safeAuthPack) return
+        if (!provider) return
 
-        const provider = new Web3Provider(safeAuthPack?.getProvider() as any);
         const signer = await provider.getSigner();
-
         console.log("Provider", provider, signer);
 
         const ethAdapter = new EthersAdapter({
@@ -123,39 +124,18 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
             signerOrProvider: signer,
         } as any);
 
-        const safeFactory: Safe = await SafeFactory.create({ ethAdapter });
+        const safeFactory = await SafeFactory.create({ ethAdapter });
 
         const safe = await safeFactory.deploySafe({
             safeAccountConfig: { threshold: 1, owners: [safeAuthSignInResponse?.eoa as string] },
         });
         console.log("SAFE Created!", await safe.getAddress());
-
-
-
-
-        // console.log(Safe);
-        // const safeFactory = await SafeFactory.create({ ethAdapter })
-
-        // const owners = ['0x<address>', '0x<address>', '0x<address>']
-        // const threshold = 3
-        // const safeAccountConfig: SafeAccountConfig = {
-        //     owners,
-        //     threshold
-        //     //   to, // Optional
-        //     //   data, // Optional
-        //     //   fallbackHandler, // Optional
-        //     //   paymentToken, // Optional
-        //     //   payment, // Optional
-        //     //   paymentReceiver // Optional
-        // }
-
-        // const safe: Safe = await safeFactory.deploySafe({ safeAccountConfig })
-
         console.log("SAFE Created!", await safe.getAddress());
 
         const safeAddress = await safe.getAddress();
         if (safeAddress) {
             setSelectedSafe(safeAddress)
+            toast.success("Safe Deployed!")
         }
 
     }

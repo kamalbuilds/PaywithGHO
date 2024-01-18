@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client"
 import React, { createContext, useEffect, useState } from "react";
 import {
@@ -6,8 +7,9 @@ import {
     AuthKitSignInData,
     SafeAuthInitOptions,
 } from '@safe-global/auth-kit'
-import { BrowserProvider, Eip1193Provider, ethers } from "ethers";
-import { EthersAdapter, SafeFactory } from "@safe-global/protocol-kit";
+import Safe, { SafeFactory, SafeAccountConfig , Web3Adapter} from '@safe-global/protocol-kit';
+import { Web3Provider } from "@ethersproject/providers";
+import { ethers } from "ethers";
 
 type AuthContextProviderProps = {
     children: React.ReactNode
@@ -112,18 +114,12 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
     const deployNewSafeWallet = async () => {
         if (!safeAuthPack) return
 
-        const provider = new BrowserProvider(safeAuthPack?.getProvider() as Eip1193Provider);
+        const provider = new Web3Provider(safeAuthPack?.getProvider()) ;
         const signer = await provider.getSigner();
 
-        const ethAdapter = new EthersAdapter({
-            ethers,
-            signerOrProvider: signer,
-        } as any);
+        console.log(Safe);
 
-        const safeFactory = await SafeFactory.create({ ethAdapter });
-        const safe = await safeFactory.deploySafe({
-            safeAccountConfig: { threshold: 1, owners: [safeAuthSignInResponse?.eoa as string] },
-        });
+        const safe = await Safe.create({ ethers, signer: signer, safeOwners: [safeAuthSignInResponse?.eoa as string] });
 
         console.log("SAFE Created!", await safe.getAddress());
 

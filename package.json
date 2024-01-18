@@ -16,6 +16,7 @@
   "dependencies": {
     "@aave/contract-helpers": "^1.21.1",
     "@aave/math-utils": "^1.21.1",
+    "@gnosis.pm/safe-core-sdk": "^3.2.0",
     "@headlessui/react": "^1.7.18",
     "@monerium/sdk": "^2.10.0",
     "@radix-ui/react-slot": "^1.0.2",

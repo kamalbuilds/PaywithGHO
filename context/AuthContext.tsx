@@ -118,8 +118,22 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
         const signer = await provider.getSigner();
 
         console.log(Safe);
+        const safeFactory = await SafeFactory.create({ ethAdapter })
 
-        const safe = await Safe.create({ ethers, signer: signer, safeOwners: [safeAuthSignInResponse?.eoa as string] });
+        const owners = ['0x<address>', '0x<address>', '0x<address>']
+        const threshold = 3
+        const safeAccountConfig: SafeAccountConfig = {
+          owners,
+          threshold
+        //   to, // Optional
+        //   data, // Optional
+        //   fallbackHandler, // Optional
+        //   paymentToken, // Optional
+        //   payment, // Optional
+        //   paymentReceiver // Optional
+        }
+        
+        const safe: Safe = await safeFactory.deploySafe({ safeAccountConfig })
 
         console.log("SAFE Created!", await safe.getAddress());
 

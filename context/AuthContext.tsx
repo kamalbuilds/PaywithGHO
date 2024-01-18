@@ -85,7 +85,7 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
     useEffect(() => {
         if (!safeAuthPack || !isAuthenticated) return
 
-        setProvider(safeAuthPack.getProvider())
+        setProvider(new Web3Provider(safeAuthPack.getProvider() as any))
     }, [isAuthenticated])
 
     const logIn = async () => {
@@ -113,7 +113,7 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
     const deployNewSafeWallet = async () => {
         if (!safeAuthPack) return
 
-        const provider = new Web3Provider(safeAuthPack?.getProvider());
+        const provider = new Web3Provider(safeAuthPack?.getProvider() as any);
         const signer = await provider.getSigner();
 
         console.log("Provider", provider, signer);

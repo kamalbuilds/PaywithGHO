@@ -4,70 +4,96 @@ import type { NextPage } from "next";
 import { ethers } from "ethers";
 import { parseUnits } from "ethers/lib/utils";
 import { useState } from "react";
-import { InterestRate, PoolBundle } from "@aave/contract-helpers";
+import { InterestRate, Pool, PoolBundle } from "@aave/contract-helpers";
 import { AaveV3GoerliGho } from "@bgd-labs/aave-address-book";
+import { AuthContextProvider, useAuth } from '@/context/AuthContext';
 
 const Interact: NextPage = () => {
-  const [address, setAddress] = useState<string>();
-  const [provider, setProvider] = useState<ethers.providers.JsonRpcProvider>();
-  const [signer, setSigner] = useState<ethers.providers.JsonRpcSigner>();
-  const [txStatus, setTxStatus] = useState<string>();
 
-  const connect = async () => {
-    // Define a type for window.ethereum, the injected wallet provider
-    type WindowWithEthereum = Window & typeof globalThis & { ethereum?: any };
-    const { ethereum } = window as WindowWithEthereum;
-    if (!ethereum) return;
+    const [address, setAddress] = useState<string>();
+    const [txStatus, setTxStatus] = useState<string>();
+    const [ghopool, setGhoPool ] = useState<any>();
 
-    // Create an ethers provider from window.ethereum
-    const provider = new ethers.providers.Web3Provider(ethereum);
-    await ethereum.enable();
+    const { provider } = useAuth();
+    const signer = provider?.getSigner();
 
-    const signer = provider.getSigner();
-    const address = await signer.getAddress();
+    console.log(signer, "singer");
 
-    setAddress(address);
-    setProvider(provider);
-    setSigner(signer);
-  };
+    const borrowGho = async () => {
+        if (provider && signer) {
 
-  const mintGho = async () => {
-    if (provider && signer) {
-      const pool = new PoolBundle(provider, {
-        POOL: AaveV3GoerliGho.POOL,
-      });
+            const address = await signer?.getAddress();
+            setAddress(address);
 
-      const borrowTx = pool.borrowTxBuilder.generateTxData({
-        user: address || "",
-        reserve: "0xcbE9771eD31e761b744D3cB9eF78A1f32DD99211",
-        amount: parseUnits("100", 18).toString(),
-        interestRateMode: InterestRate.Variable,
-      });
+            const pool = new PoolBundle(provider, {
+                POOL: AaveV3GoerliGho.POOL,
+            });
 
-      signer
-        .sendTransaction(borrowTx)
-        .then((txResponse) => {
-          setTxStatus(`Tx submitted with hash ${txResponse.hash}`);
-          return txResponse.wait(); // Wait for the transaction to be confirmed
-        })
-        .then((txReceipt) => {
-          setTxStatus(`Tx confirmed with hash ${txReceipt.transactionHash}`);
-        })
-        .catch((error) => {
-          setTxStatus(`Tx failed :( with error ${error.toString()}`);
+            console.log(pool);
+            const borrowTx = pool.borrowTxBuilder.generateTxData({
+                user: address || "",
+                reserve: "0xcbE9771eD31e761b744D3cB9eF78A1f32DD99211",
+                amount: parseUnits("100", 18).toString(),
+                interestRateMode: InterestRate.Variable,
+            });
+
+
+            //TODO @abhishek-01k 
+            signer
+                .sendTransaction(borrowTx)
+                .then((txResponse) => {
+                    setTxStatus(`Tx submitted with hash ${txResponse.hash}`);
+                    return txResponse.wait(); // Wait for the transaction to be confirmed
+                })
+                .then((txReceipt) => {
+                    setTxStatus(`Tx confirmed with hash ${txReceipt.transactionHash}`);
+                })
+                .catch((error) => {
+                    setTxStatus(`Tx failed :( with error ${error.toString()}`);
+                });
+        }
+    };
+
+    const supplyasset = async () =>{
+
+        const pool = new PoolBundle(provider, {
+            POOL: AaveV3GoerliGho.POOL,
+        });
+
+        const supply = await pool.supplyTxBuilder.generateTxData({
+            user : address || "",
+            reserve: "0xcbE9771eD31e761b744D3cB9eF78A1f32DD99211",
+            amount: '10',
+            onBehalfOf: address,
         });
     }
-  };
 
-  return (
-    <main>
-      <h1>GHO Demo</h1>
-      <button onClick={connect}>Connect</button>
-      {address && <h3>Address: {address}</h3>}
-      {txStatus && <p>Status: {txStatus}</p>}
-      <button onClick={mintGho}>Mint GHO</button>
-    </main>
-  );
+    const repayasset = async () =>{
+
+        const pool = new PoolBundle(provider, {
+            POOL: AaveV3GoerliGho.POOL,
+        });
+
+        const repay = await pool.repayTxBuilder.generateTxData({
+            user : address || "",
+            reserve: "0xcbE9771eD31e761b744D3cB9eF78A1f32DD99211",
+            amount: '10',
+            onBehalfOf: address,
+            interestRateMode: InterestRate.Variable,
+            // onBehalfOf?: tEthereumAddress;
+            // useOptimizedPath?: boolean;
+        });
+    }
+
+
+    return (
+        <main>
+            <h1>GHO Demo</h1>
+            {address && <h3>Address: {address}</h3>}
+            {txStatus && <p>Status: {txStatus}</p>}
+            <button onClick={borrowGho}>Mint GHO</button>
+        </main>
+    );
 };
 
 export default Interact;

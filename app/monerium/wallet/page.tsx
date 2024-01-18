@@ -78,6 +78,7 @@ const MoneriumWallet = () => {
 
 
     useEffect(() => {
+        if(!window) return
         const authCode = new URLSearchParams(window.location.search).get('code') || undefined
         const refreshToken = localStorage.getItem(MONERIUM_TOKEN) || undefined
 

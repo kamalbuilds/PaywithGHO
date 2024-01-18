@@ -7,17 +7,17 @@
   resolved "https://registry.npmjs.org/@aashutoshrathi/word-wrap/-/word-wrap-1.2.6.tgz"
   integrity sha512-1Yjs2SvM8TflER/OD3cOjhWWOZb58A2t7wpE2S9XfBYTiIl+XFhQG2bjy4Pu1I+EAlCNUzRDYDdFwFYUKvXcIA==
 
-"@aave/contract-helpers@^1.21.1":
-  version "1.21.1"
-  resolved "https://registry.npmjs.org/@aave/contract-helpers/-/contract-helpers-1.21.1.tgz"
-  integrity sha512-sp5m0KZ0lInlBfTfZnbR7yh0jG1Q+5wvM42H7JBMOdjxb1jWKWkAWg0DFQJzXlDsBo+bk6BS/sBHa4Eql0IA8A==
+"@aave/contract-helpers@^1.22.0":
+  version "1.22.0"
+  resolved "https://registry.yarnpkg.com/@aave/contract-helpers/-/contract-helpers-1.22.0.tgz#b7fe364320d5d4fe70beca1a37bf885c13cc1e1c"
+  integrity sha512-d0diRcgRABbx7r/f7L1G3fVYQJav4YncdutcJpmvBpb4xgttRBrIORsUONDC5w60XOIqK083wvK8unisGNkByg==
   dependencies:
     isomorphic-unfetch "^3.1.0"
 
-"@aave/math-utils@^1.21.1":
-  version "1.21.1"
-  resolved "https://registry.npmjs.org/@aave/math-utils/-/math-utils-1.21.1.tgz"
-  integrity sha512-oFZafJ5MeNtiqgJBEsmvvGlFtdFauWX0wI9B+wikqT//LVc0PYS0IX49UItv6yoTcd0I7IDq3Zv8V47e3lhBOw==
+"@aave/math-utils@^1.22.0":
+  version "1.22.0"
+  resolved "https://registry.yarnpkg.com/@aave/math-utils/-/math-utils-1.22.0.tgz#79e5e75a79e885bd219960c3f9b3701e593248a8"
+  integrity sha512-MEveynU2Z5f5R7Mvp67HUHuizQSaWzcER667x4VkUtyXwBMZleI+5bO+rtYo3wvj/136fN/aB0Pbxy5y3EPArg==
 
 "@adraffy/ens-normalize@1.10.0":
   version "1.10.0"
@@ -241,6 +241,11 @@
     "@babel/helper-string-parser" "^7.23.4"
     "@babel/helper-validator-identifier" "^7.22.20"
     to-fast-properties "^2.0.0"
+
+"@bgd-labs/aave-address-book@^2.17.0":
+  version "2.17.0"
+  resolved "https://registry.yarnpkg.com/@bgd-labs/aave-address-book/-/aave-address-book-2.17.0.tgz#06f5e8950135d00039220a0a6f44055e520924e2"
+  integrity sha512-JhKGyaCm6Qg+0jtX3UiNNi7c8+vYqFp8gbAsgMnxMZhDOEoNo4gPtiEq9M9rFl1PwjSEdMyzoRcP/nquFPC52g==
 
 "@coinbase/wallet-sdk@^3.6.6":
   version "3.7.2"
@@ -7304,6 +7309,11 @@ redis-parser@^3.0.0:
   integrity sha512-DJnGAeenTdpMEH6uAJRK/uiyEIH9WVsUmoLwzudwGJUwZPp80PDBWPHXSAGNPwNvIXAbe7MSUB1zQFugFml66A==
   dependencies:
     redis-errors "^1.0.0"
+
+reflect-metadata@^0.1.13:
+  version "0.1.14"
+  resolved "https://registry.yarnpkg.com/reflect-metadata/-/reflect-metadata-0.1.14.tgz#24cf721fe60677146bb77eeb0e1f9dece3d65859"
+  integrity sha512-ZhYeb6nRaXCfhnndflDK8qI6ZQ/YcWZCISRAWICW9XYqMUwjZM9Z0DveWX/ABN01oxSHwVxKQmxeYZSsm0jh5A==
 
 reflect.getprototypeof@^1.0.4:
   version "1.0.4"

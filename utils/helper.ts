@@ -2,11 +2,19 @@ import { Pool } from '@aave/contract-helpers';
 import { EthereumTransactionTypeExtended } from '@aave/contract-helpers';
 import { BigNumber, providers } from 'ethers';
 import { ethers } from 'ethers';
+import { InterestRate, PoolBundle } from "@aave/contract-helpers";
+import { AaveV3GoerliGho } from "@bgd-labs/aave-address-book";
 
-const pool = new Pool(provider, {
-  POOL: poolAddress,
-  WETH_GATEWAY: wethGatewayAddress,
-});
+// const pool = new Pool(provider, {
+//   POOL: AaveV3GoerliGho.POOL_ADDRESSES_PROVIDER,
+//   WETH_GATEWAY: wethGatewayAddress,
+// });
+
+
+  const pool = new PoolBundle(provider, {
+    POOL: AaveV3GoerliGho.POOL,
+  });
+
 
 const txs: EthereumTransactionTypeExtended[] = await pool.supply({
     user,

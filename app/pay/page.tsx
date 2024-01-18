@@ -35,7 +35,7 @@ const PayPage = () => {
         ; (async () => {
             if (!authProvider || !selectedSafe) return
 
-            const provider = new ethers.BrowserProvider(authProvider)
+            const provider = new ethers.providers.Web3Provider(authProvider)
 
             const safeOwner = await provider.getSigner()
             const ethAdapter = new EthersAdapter({ ethers, signerOrProvider: safeOwner })

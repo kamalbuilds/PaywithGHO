@@ -2,7 +2,7 @@
 import { useAuth } from '@/context/AuthContext';
 import { AuthContext, Balances, Order, OrderState, Profile } from '@monerium/sdk';
 import { MoneriumPack, SafeMoneriumClient } from '@safe-global/onramp-kit';
-import Safe, { EthersAdapter } from '@safe-global/protocol-kit';
+import Safe, { EthersAdapter, SafeFactory } from '@safe-global/protocol-kit';
 import { ethers } from 'ethers';
 import React, { useEffect, useState } from 'react';
 import LoginWithMonerium from './LoginWithMonerium';
@@ -40,8 +40,13 @@ const PayPage = () => {
             const provider = new ethers.providers.Web3Provider(authProvider)
 
             const safeOwner = await provider.getSigner();
-            
-            const ethAdapter = new EthersAdapter({ ethers, signerOrProvider: safeOwner })
+
+            // const ethAdapter = new EthersAdapter({ ethers, signerOrProvider: safeOwner })
+
+            const ethAdapter = new EthersAdapter({
+                ethers,
+                signerOrProvider: safeOwner,
+            } as any);
 
             const safeSdk = await Safe.create({
                 ethAdapter: ethAdapter,
@@ -49,16 +54,25 @@ const PayPage = () => {
                 isL1SafeSingleton: true
             })
 
+            console.log("safe sdk", safeSdk)
+
             setProtocolKit(safeSdk);
 
             const pack = new MoneriumPack({
+                redirectUrl: 'http://localhost:3000/pay',
                 clientId: '2040e3b2-b2d4-11ee-a3f4-524d6b1e805e',
                 environment: 'sandbox'
             })
 
+            console.log("Monerium Pack 1", pack);
+
+
             await pack.init({
                 safeSdk
             })
+
+            console.log("Monerium Pack 2", pack);
+            setMoneriumPack(pack)
 
             pack.subscribe(OrderState.pending, (notification) => {
                 console.log("State is pending.....")
@@ -87,13 +101,14 @@ const PayPage = () => {
             const owners = await safeSdk.getOwners()
 
             setSafeThreshold(`${threshold}/${owners.length}`)
-            setMoneriumPack(pack)
         })()
     }, [authProvider, selectedSafe])
 
     useEffect(() => {
         const authCode = new URLSearchParams(window.location.search).get('code') || undefined
         const refreshToken = localStorage.getItem(MONERIUM_TOKEN) || undefined
+
+        console.log("Authc ode and token", authCode, refreshToken);
 
         if (authCode || refreshToken) startMoneriumFlow(authCode, refreshToken)
     }, [moneriumPack])
@@ -103,11 +118,17 @@ const PayPage = () => {
         setisLoading(true);
         if (!moneriumPack) return
 
+        console.log("Pack is starting....")
+        // const moneriumClient = await moneriumPack?.open({});
+
         const moneriumClient = await moneriumPack.open({
             redirectUrl: 'http://localhost:3000/pay',
             authCode,
             refreshToken
         })
+
+        console.log("Pack found data....")
+
 
         const authContext = await moneriumClient.getAuthContext()
         const profile = await moneriumClient.getProfile(authContext.defaultProfile)

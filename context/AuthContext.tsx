@@ -123,7 +123,7 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
             signerOrProvider: signer,
         } as any);
 
-        const safeFactory = await SafeFactory.create({ ethAdapter });
+        const safeFactory: Safe = await SafeFactory.create({ ethAdapter });
 
         const safe = await safeFactory.deploySafe({
             safeAccountConfig: { threshold: 1, owners: [safeAuthSignInResponse?.eoa as string] },

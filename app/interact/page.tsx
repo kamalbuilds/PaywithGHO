@@ -88,23 +88,32 @@ const Interact: NextPage = () => {
 
         const supply = await pool.supplyTxBuilder.generateTxData({
             user: selectedSafe || "",
-            reserve: "0xcbE9771eD31e761b744D3cB9eF78A1f32DD99211",
-            amount: '10',
+            reserve: "0x9FD21bE27A2B059a288229361E2fA632D8D2d074",
+            amount: '100',
             onBehalfOf: selectedSafe,
         });
 
         console.log("Supply", supply);
 
-        const safeTransaction = await safeSDKKit.createTransaction({
-            supply
-        });
-        console.log("safeTransaction", safeTransaction);
+        const safeTransactionData = {
+            to: supply.to,
+            value: parseUnits("100", 6).toString(),
+            data: supply.data,
+            gasPrice: 1000000000
+        }
 
-        const data = supply.data;
+        const safeTransaction = await safeSDKKit.createTransaction({ safeTransactionData });
+        console.log("safeTransaction", safeTransaction);
 
         const tx = await safeSDKKit.signTransaction(safeTransaction);
 
         console.log("tx", tx);
+
+        const txResult = await safeSDKKit.executeTransaction(tx);
+
+        console.log("txResult", txResult)
+
+        // end
     }
 
     const repayasset = async () => {

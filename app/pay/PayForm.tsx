@@ -13,7 +13,7 @@ const PayForm = ({
     moneriumPack
 }: any) => {
 
-    const { isLoggedIn, selectedSafe, provider: authProvider } = useAuth()
+    const { isLoggedIn, selectedSafe, provider: authProvider, safeSDKKit } = useAuth()
 
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [counterpartIban, setCounterpartIban] = useState<string>('')
@@ -23,6 +23,8 @@ const PayForm = ({
     const [info, setInfo] = useState('');
 
     const [orderState, setOrderState] = useState<OrderState>()
+
+    console.log("safeSDKKit", safeSDKKit);
 
     useEffect(() => {
         if (orderState === OrderState.processed || orderState === OrderState.rejected) {

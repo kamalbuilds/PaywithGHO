@@ -25,6 +25,7 @@ type AuthContextType = {
     logIn?: () => void
     logOut?: () => void
     deployNewSafeWallet?: () => void
+    safeSDKKit?: Safe
 
 }
 
@@ -40,8 +41,8 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
     const [isAuthenticated, setIsAuthenticated] = useState(!!safeAuthPack?.isAuthenticated)
     const [safeAuthSignInResponse, setSafeAuthSignInResponse] = useState<AuthKitSignInData>()
     const [provider, setProvider] = useState<ethers.providers.Web3Provider | null>()
-    const [selectedSafe, setSelectedSafe] = useState('')
-
+    const [selectedSafe, setSelectedSafe] = useState('');
+    const [safeSDKKit, setSafeSDKKit] = useState<Safe>();
     const [isSafeLoading, setIsSafeLoading] = useState<boolean>(false);
 
     useEffect(() => {
@@ -89,6 +90,31 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
 
         setProvider(new Web3Provider(safeAuthPack.getProvider() as any))
     }, [isAuthenticated])
+
+    // Safe sdk initiate
+    useEffect(() => {
+        ; (async () => {
+            if (!provider || !selectedSafe) return
+
+            const safeOwner = await provider.getSigner();
+
+            const ethAdapter = new EthersAdapter({
+                ethers,
+                signerOrProvider: safeOwner,
+            } as any);
+
+            const safeSdk = await Safe.create({
+                ethAdapter: ethAdapter,
+                safeAddress: selectedSafe,
+                isL1SafeSingleton: true
+            })
+
+            console.log("safe sdk", safeSdk)
+            setSafeSDKKit(safeSdk);
+
+        })()
+
+    }, [provider, selectedSafe])
 
     const logIn = async () => {
         if (!safeAuthPack) return
@@ -152,7 +178,8 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
                 selectedSafe,
                 setSelectedSafe,
                 deployNewSafeWallet,
-                isSafeLoading
+                isSafeLoading,
+                safeSDKKit
             }}
         >
             {children}

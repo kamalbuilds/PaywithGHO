@@ -9,6 +9,10 @@ export const siteConfig = {
       title: "Home",
       href: "/",
     },
+    {
+      title: "Interact",
+      href: "/interact"
+    }
   ],
   links: {
     github: "https://github.com/kamalbuilds/paywithgho",

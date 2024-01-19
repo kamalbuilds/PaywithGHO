@@ -5,9 +5,10 @@ import { ethers } from "ethers";
 import { parseUnits } from "ethers/lib/utils";
 import { useState } from "react";
 import { InterestRate, Pool, PoolBundle } from "@aave/contract-helpers";
-import { AaveV3GoerliGho } from "@bgd-labs/aave-address-book";
+import {  AaveV3Sepolia } from "@bgd-labs/aave-address-book";
 import { AuthContextProvider, useAuth } from '@/context/AuthContext';
 import { buttonVariants } from "@/components/ui/button";
+import { toast } from "react-toastify";
 
 const Interact: NextPage = () => {
 
@@ -27,7 +28,7 @@ const Interact: NextPage = () => {
             // setAddress(address);
 
             const pool = new PoolBundle(provider, {
-                POOL: AaveV3GoerliGho.POOL,
+                POOL: AaveV3Sepolia.POOL,
             });
 
             console.log("pool", pool);
@@ -39,16 +40,12 @@ const Interact: NextPage = () => {
             });
             console.log("Borrow Tx", borrowTx);
 
-            const intValue = parseInt(borrowTx.gasLimit.toString());
-
-            console.log("Gas limit", intValue);
-
 
             const safeTransactionData = {
                 to: borrowTx.to,
-                value: parseUnits("0.01", 18).toString(),
+                value: parseUnits("0", 18).toString(),
                 data: borrowTx.data,
-                gasPrice: borrowTx.gasLimit
+                safeTxGas: borrowTx.gasLimit
             }
 
             const safeTransaction = await safeSDKKit.createTransaction({ safeTransactionData });
@@ -83,13 +80,13 @@ const Interact: NextPage = () => {
     const supplyasset = async () => {
 
         const pool = new PoolBundle(provider, {
-            POOL: AaveV3GoerliGho.POOL,
+            POOL: AaveV3Sepolia.POOL,
         });
 
         const supply = await pool.supplyTxBuilder.generateTxData({
             user: selectedSafe || "",
-            reserve: "0x9FD21bE27A2B059a288229361E2fA632D8D2d074",
-            amount: '100',
+            reserve: "0xFF34B3d4Aee8ddCd6F9AFFFB6Fe49bD371b8a357",  // dai address
+            amount: '500',
             onBehalfOf: selectedSafe,
         });
 
@@ -97,19 +94,21 @@ const Interact: NextPage = () => {
 
         const safeTransactionData = {
             to: supply.to,
-            value: parseUnits("100", 6).toString(),
+            value: parseUnits("0", 18).toString(), // ethers BigNumber
             data: supply.data,
-            gasPrice: 1000000000
+            safeTxGas: supply.gasLimit?.toString()
         }
 
-        const safeTransaction = await safeSDKKit.createTransaction({ safeTransactionData });
+        const safeTransaction = await safeSDKKit?.createTransaction({ safeTransactionData });
         console.log("safeTransaction", safeTransaction);
 
-        const tx = await safeSDKKit.signTransaction(safeTransaction);
+        const tx = await safeSDKKit?.signTransaction(safeTransaction);
 
         console.log("tx", tx);
 
-        const txResult = await safeSDKKit.executeTransaction(tx);
+        const txResult = await safeSDKKit?.executeTransaction(tx);
+
+        txResult? toast.success("Successfully supplied") : toast.error("Transaction Failed");
 
         console.log("txResult", txResult)
 
@@ -119,7 +118,7 @@ const Interact: NextPage = () => {
     const repayasset = async () => {
 
         const pool = new PoolBundle(provider, {
-            POOL: AaveV3GoerliGho.POOL,
+            POOL: AaveV3Sepolia.POOL,
         });
 
         const repay = await pool.repayTxBuilder.generateTxData({
@@ -133,6 +132,27 @@ const Interact: NextPage = () => {
         });
 
         console.log("repay", repay);
+
+        const safeTransactionData = {
+            to: repay.to,
+            value: parseUnits("0", 18).toString(), // ethers BigNumber
+            data: repay.data,
+            safeTxGas: repay.gasLimit?.toString()
+        }
+
+        const safeTransaction = await safeSDKKit?.createTransaction({ safeTransactionData });
+        console.log("safeTransaction", safeTransaction);
+
+        const tx = await safeSDKKit?.signTransaction(safeTransaction);
+
+        console.log("tx", tx);
+
+        const txResult = await safeSDKKit?.executeTransaction(tx);
+
+        txResult? toast.success("Successfully repayed ✅") : toast.error("Repayment Failed ❌");
+
+        console.log("txResult", txResult)
+
     }
 
 

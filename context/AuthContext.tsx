@@ -55,10 +55,10 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
                 buttonPosition: 'bottom-right',
                 showWidgetButton: true,
                 chainConfig: {
-                    // chainId: '0xaa36a7', 
-                    chainId: '0x5',
-                    // rpcTarget: 'https://eth-sepolia.g.alchemy.com/v2/DU0xK0nck0Bt7hWgodif5n_UctwzaX5R' 
-                    rpcTarget: 'https://eth-goerli.g.alchemy.com/v2/F1Pki8Inoa2E7rVheYmIEBQU-VA2tpv8'
+                    chainId: '0xaa36a7', 
+                    rpcTarget: 'https://eth-sepolia.g.alchemy.com/v2/DU0xK0nck0Bt7hWgodif5n_UctwzaX5R' 
+                    // chainId: '0x5',
+                    // rpcTarget: 'https://eth-goerli.g.alchemy.com/v2/F1Pki8Inoa2E7rVheYmIEBQU-VA2tpv8'
                 }
             }
 

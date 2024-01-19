@@ -32,9 +32,9 @@ export function SiteHeader() {
                         <Address address={data.safes[0]} showBlockExplorerLink />
                       </div>
                     )} */}
-                    {data.eoa && (
+                    {data.safes && (
                       <div className='border px-2 py-1 my-4 border-gray-600 rounded-md'>
-                        <Address address={data.eoa} showBlockExplorerLink />
+                        <Address address={data.safes[0]} showBlockExplorerLink />
                       </div>
                     )}
                   </>

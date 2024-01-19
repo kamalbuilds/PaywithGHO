@@ -63,7 +63,7 @@ const PayPage = () => {
             setProtocolKit(safeSdk);
 
             const pack = new MoneriumPack({
-                redirectUrl: 'http://localhost:3000/pay',
+                // redirectUrl: 'http://localhost:3000/pay',
                 clientId: '2040e3b2-b2d4-11ee-a3f4-524d6b1e805e',
                 environment: 'sandbox'
             })

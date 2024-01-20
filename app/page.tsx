@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/AuthContext";
 import Image from "next/image";
 import Link from "next/link";
+import gho from "../lib/gho.png";
 
 export default function IndexPage() {
   const { logIn, isLoggedIn, data } = useAuth();
@@ -20,7 +21,7 @@ export default function IndexPage() {
             Welcome to <span className="text-purple-500"> PAYWithGHO </span>
           </h1>
           <Image
-            src="/gho.png"
+            src={gho}
             className="right-0"
             alt="gho"
             width={150}

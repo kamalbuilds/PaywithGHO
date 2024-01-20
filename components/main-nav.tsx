@@ -40,16 +40,6 @@ export function MainNav({ items }: MainNavProps) {
 
 
       <Link
-        href='/pay'
-        className={cn(
-          "flex items-center text-sm font-medium text-muted-foreground",
-          // item.disabled && "cursor-not-allowed opacity-80"
-        )}
-      >
-        Pay with IBAN
-      </Link>
-
-      <Link
         href='/'
         className={cn(
           "flex items-center text-sm font-medium text-muted-foreground",

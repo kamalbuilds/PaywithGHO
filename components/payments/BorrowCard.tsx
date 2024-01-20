@@ -31,14 +31,10 @@ const BorrowCard = () => {
 
     const { provider, safeSDKKit, selectedSafe } = useAuth();
 
-    console.log(safeSDKKit, selectedSafe, "signer");
-
     const [amount, setAmount] = useState<any>();
     const [selectedToken, setSelectedToken] = useState<any>();
 
     const handleBorrow = async () => {
-
-        console.log("Input in func", amount, selectedToken);
 
         if (!amount) {
             toast.error("Please fill Amount");
@@ -52,18 +48,11 @@ const BorrowCard = () => {
         if (provider && safeSDKKit) {
 
             const signer = provider?.getSigner();
-            console.log("Signer", signer);
-
-            const address = await signer?.getAddress();
-            console.log("Address", address);
-            // setAddress(address);
 
             const pool = new PoolBundle(provider, {
                 POOL: AaveV3Sepolia.POOL,
             });
 
-            console.log("pool", pool);
-            
             const s_amount = amount.toString();
             const borrowTx = pool.borrowTxBuilder.generateTxData({
                 user: selectedSafe || "",
@@ -85,7 +74,6 @@ const BorrowCard = () => {
             console.log("safeTransaction", safeTransaction);
 
             const tx = await safeSDKKit.signTransaction(safeTransaction);
-
             console.log("tx", tx);
 
             const txResult = await safeSDKKit.executeTransaction(tx);
@@ -98,7 +86,6 @@ const BorrowCard = () => {
 
     const handleSelect = (value: string) => {
         const selectedToken = BorrowAssetToken.find(obj => obj.name === value);
-        console.log("Selected Token", selectedToken);
         setSelectedToken(selectedToken);
     }
 

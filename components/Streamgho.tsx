@@ -8,6 +8,7 @@ import SuperfluidWidget, {
   WidgetProps,
 } from "@superfluid-finance/widget"
 import { useModal } from "connectkit"
+import { Button } from "./ui/button";
 
 export function Streamgho() {
   const { open, setOpen } = useModal()
@@ -20,7 +21,7 @@ export function Streamgho() {
     [open, setOpen]
   )
 
-  const mytokenlist =   {
+  const mytokenlist = {
     "name": "Superfluid Token List",
     "version": {
       "major": 2,
@@ -44,17 +45,17 @@ export function Streamgho() {
         "logoURI": "https://raw.githubusercontent.com/superfluid-finance/assets/master/public/tokens/gho/icon.svg",
         "tags": ["supertoken", "tier_a"]
       },
-      
-        {
-          "address": "0xc4bf5cbdabe595361438f8c6a187bdc330539c60",
-          "name": "GHO Token",
-          "symbol": "GHO",
-          "decimals": 18,
-          "chainId": 11155111,
-          "logoURI": "https://raw.githubusercontent.com/superfluid-finance/assets/master/public/tokens/gho/icon.svg",
-          "tags": ["underlying"]
-        },
-      
+
+      {
+        "address": "0xc4bf5cbdabe595361438f8c6a187bdc330539c60",
+        "name": "GHO Token",
+        "symbol": "GHO",
+        "decimals": 18,
+        "chainId": 11155111,
+        "logoURI": "https://raw.githubusercontent.com/superfluid-finance/assets/master/public/tokens/gho/icon.svg",
+        "tags": ["underlying"]
+      },
+
     ]
   };
 
@@ -88,7 +89,7 @@ export function Streamgho() {
       walletManager={walletManager}
     >
       {({ openModal }) => (
-        <button onClick={() => openModal()}>Stream GHO as Payments</button>
+        <Button variant='outline' onClick={() => openModal()}>Stream GHO as Payments</Button>
       )}
     </SuperfluidWidget>
   )

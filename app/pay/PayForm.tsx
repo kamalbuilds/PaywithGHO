@@ -5,12 +5,15 @@ import { PaymentStandard, placeOrderMessage, OrderState } from '@monerium/sdk'
 import { useAuth } from '@/context/AuthContext';
 import { buttonVariants } from '@/components/ui/button';
 import { Input } from '@/components/ui/Input';
+import Userbalance from './Userbalance';
+import { toast } from 'react-toastify';
 
 const PayForm = ({
     moneriumClient,
     closeMoneriumFlow,
     protocolKit,
-    moneriumPack
+    moneriumPack,
+    balances
 }: any) => {
 
     const { isLoggedIn, selectedSafe, provider: authProvider, safeSDKKit } = useAuth()
@@ -23,8 +26,6 @@ const PayForm = ({
     const [info, setInfo] = useState('');
 
     const [orderState, setOrderState] = useState<OrderState>()
-
-    console.log("safeSDKKit", safeSDKKit);
 
     useEffect(() => {
         if (orderState === OrderState.processed || orderState === OrderState.rejected) {
@@ -46,42 +47,44 @@ const PayForm = ({
         }
 
         const message = placeOrderMessage(amount, counterpartIban);
-        console.log("Message", message);
-
-        console.log("Input", firstName, lastName, amount, info, counterpartIban);
+        console.log("Message", message,);
 
         const s_amount = amount.toString();
-        console.log("S_AMOUNT", s_amount);
-        const tx = await moneriumClient?.send({
-            amount: s_amount,
-            counterpart: {
-                identifier: {
-                    standard: 'iban' as PaymentStandard.iban,
-                    iban: counterpartIban
+        try {
+            const tx = await moneriumClient?.send({
+                amount: s_amount,
+                currency: 'eur',
+                counterpart: {
+                    identifier: {
+                        standard: 'iban' as PaymentStandard.iban,
+                        iban: counterpartIban
+                    },
+                    details: {
+                        firstName: firstName,
+                        lastName: lastName,
+                        country: 'ES'
+                    }
                 },
-                details: {
-                    firstName: firstName,
-                    lastName: lastName,
-                    country: 'ES'
-                }
-            },
-            memo: info
-        })
+                memo: info
+            })
 
-        console.log("New log transactions", tx);
+            console.log("New log transactions", tx);
 
-        //TODO: Disable this if you want to go to safe wallet and then sign the transaction
-        const txResult = await protocolKit.executeTransaction(tx);
-        console.log("TxResult", txResult);
+            //TODO: Disable this if you want to go to safe wallet and then sign the transaction
+            const txResult = await protocolKit.executeTransaction(tx);
+            console.log("TxResult", txResult);
+
+            toast.success("Transaction processed")
+        } catch (error) {
+            console.log("Error in transfer", error);
+        }
 
     }
 
     return (
-        <div className='px-4'>
+        <div className='px-4 flex gap-8 justify-center my-8'>
 
-            <div className='flex justify-end my-4'>
-                <button className={buttonVariants()} onClick={closeMoneriumFlow}>Log Out Memorium</button>
-            </div>
+            {balances && <Userbalance closeMoneriumFlow={closeMoneriumFlow} balances={balances} />}
 
             <div className='flex justify-center items-center'>
                 <div className='flex flex-col gap-4 border border-[#c4c1c1] px-[30px] py-[30px] rounded-[20px] '>
@@ -139,20 +142,20 @@ const PayForm = ({
                         Transfer
                     </button>
                 </div>
-            </div>
 
 
-            <div>
-                {orderState && (
-                    <>
-                        {orderState === OrderState.placed && <div >Order placed</div>}
-                        {orderState === OrderState.pending && <div >Order pending</div>}
-                        {orderState === OrderState.rejected && <div >Order rejected</div>}
-                        {orderState === OrderState.processed && (
-                            <div>Order processed</div>
-                        )}
-                    </>
-                )}
+                <div>
+                    {orderState && (
+                        <>
+                            {orderState === OrderState.placed && <div >Order placed</div>}
+                            {orderState === OrderState.pending && <div >Order pending</div>}
+                            {orderState === OrderState.rejected && <div >Order rejected</div>}
+                            {orderState === OrderState.processed && (
+                                <div>Order processed</div>
+                            )}
+                        </>
+                    )}
+                </div>
             </div>
 
         </div>

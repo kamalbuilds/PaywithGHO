@@ -9,9 +9,17 @@ export const siteConfig = {
       title: "Home",
       href: "/",
     },
+    // {
+    //   title: "Interact",
+    //   href: "/interact"
+    // },
     {
-      title: "Interact",
-      href: "/interact"
+      title: "Widget",
+      href: "/widget"
+    },
+    {
+      title: "Pay with IBAN",
+      href: "/pay"
     }
   ],
   links: {

@@ -24,6 +24,7 @@ import { parseUnits } from 'viem';
 import { toast } from 'react-toastify';
 import { SupplyAssetToken } from '@/config/asset';
 import Image from 'next/image';
+import { ethers } from 'ethers';
 
 
 
@@ -57,10 +58,12 @@ const SupplyCard = () => {
                 const pool = new PoolBundle(provider, {
                     POOL: AaveV3Sepolia.POOL,
                 });
+
+                const s_amount = amount.toString();
                 const supply = await pool.supplyTxBuilder.generateTxData({
                     user: selectedSafe || "",
                     reserve: selectedToken.contractAddress,  // dai address
-                    amount: '500',
+                    amount: parseUnits(s_amount, selectedToken.decimal).toString(),
                     onBehalfOf: selectedSafe,
                 });
 
@@ -98,6 +101,37 @@ const SupplyCard = () => {
         const selectedToken = SupplyAssetToken.find(obj => obj.name === value);
         console.log("Selected Token", selectedToken);
         setSelectedToken(selectedToken);
+
+    }
+
+    const handleApprove = async () => {
+        if (selectedToken && safeSDKKit) {
+            const signer = provider?.getSigner();
+            console.log("Signer", signer);
+
+            const tokenAddress = selectedToken.contractAddress;
+            const contract = new ethers.Contract(tokenAddress, ['function approve(address spender, uint256 amount)'], signer);
+
+            const data = contract.interface.encodeFunctionData('approve', [AaveV3Sepolia.POOL, amount]);
+
+            const safeTransactionData = {
+                to: tokenAddress,
+                data: data,
+                value: parseUnits("0", 18).toString(),
+            };
+
+            const safeTransaction = await safeSDKKit.createTransaction({ safeTransactionData });
+            console.log("safeTransaction", safeTransaction);
+
+            const tx = await safeSDKKit.signTransaction(safeTransaction);
+
+            console.log("tx", tx);
+
+            const txResult = await safeSDKKit.executeTransaction(tx);
+
+            console.log("txResult", txResult)
+
+        }
 
     }
 
@@ -154,14 +188,17 @@ const SupplyCard = () => {
                 </form>
             </CardContent>
             <CardFooter className='flex flex-col gap-4'>
-                {selectedToken && <button className={buttonVariants({ variant: "outline" })} onClick={handleSupply}>
-                    Approve {selectedToken.name}
-                </button>}
-                {selectedToken ? <button className={buttonVariants()} onClick={handleSupply}>
-                    Supply {selectedToken.name}
-                </button> : (
+                {selectedToken &&
+                    <button className={buttonVariants({ variant: "outline" })} onClick={handleApprove}>
+                        Approve {selectedToken.name}
+                    </button>
+                }
+                {selectedToken ?
+                    <button className={buttonVariants()} onClick={handleSupply}>
+                        Supply {selectedToken.name}
+                    </button> :
                     <Button variant="outline" disabled={true} className=''>Supply Token</Button>
-                )}
+                }
 
             </CardFooter>
         </Card>

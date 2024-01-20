@@ -68,7 +68,7 @@ const BorrowCard = () => {
             const borrowTx = pool.borrowTxBuilder.generateTxData({
                 user: selectedSafe || "",
                 reserve: selectedToken.contractAddress,
-                amount: parseUnits(s_amount, 18).toString(),
+                amount: parseUnits(s_amount, selectedToken.decimal).toString(),
                 interestRateMode: InterestRate.Variable,
             });
             console.log("Borrow Tx", borrowTx);

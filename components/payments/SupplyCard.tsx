@@ -105,14 +105,18 @@ const SupplyCard = () => {
     }
 
     const handleApprove = async () => {
+        if (!amount) {
+            toast.error("Please fill Amount");
+            return;
+        }
         if (selectedToken && safeSDKKit) {
             const signer = provider?.getSigner();
-            console.log("Signer", signer);
 
             const tokenAddress = selectedToken.contractAddress;
             const contract = new ethers.Contract(tokenAddress, ['function approve(address spender, uint256 amount)'], signer);
 
-            const data = contract.interface.encodeFunctionData('approve', [AaveV3Sepolia.POOL, amount]);
+            const s_amount = amount?.toString();
+            const data = contract.interface.encodeFunctionData('approve', [AaveV3Sepolia.POOL, parseUnits(s_amount, selectedToken.decimal).toString()]);
 
             const safeTransactionData = {
                 to: tokenAddress,

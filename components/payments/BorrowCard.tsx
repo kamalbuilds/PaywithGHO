@@ -34,7 +34,7 @@ const BorrowCard = () => {
 
     console.log(safeSDKKit, selectedSafe, "signer");
 
-    const [amount, setAmount] = useState<number>();
+    const [amount, setAmount] = useState<any>();
     const [selectedToken, setSelectedToken] = useState<any>();
 
     const handleBorrow = async () => {
@@ -119,14 +119,15 @@ const BorrowCard = () => {
                                 value={amount}
                                 onChange={(e) => {
                                     const inputText = e.target.value;
-                                    const numericValue = parseFloat(inputText);
-                                    console.log("Input", inputText, numericValue);
+                                    setAmount(inputText);
+                                    // const numericValue = parseFloat(inputText);
+                                    // console.log("Input", inputText, numericValue);
 
-                                    if (!isNaN(numericValue) || 0) {
-                                        setAmount(numericValue);
-                                    } else {
-                                        console.log('Please enter a valid number');
-                                    }
+                                    // if (!isNaN(numericValue) || 0) {
+                                    //     setAmount(numericValue);
+                                    // } else {
+                                    //     console.log('Please enter a valid number');
+                                    // }
                                 }} />
                         </div>
                         <div className="flex flex-col space-y-1.5">

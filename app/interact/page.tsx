@@ -5,10 +5,12 @@ import { ethers } from "ethers";
 import { parseUnits } from "ethers/lib/utils";
 import { useState } from "react";
 import { InterestRate, Pool, PoolBundle } from "@aave/contract-helpers";
-import {  AaveV3Sepolia } from "@bgd-labs/aave-address-book";
+import { AaveV3Sepolia } from "@bgd-labs/aave-address-book";
 import { AuthContextProvider, useAuth } from '@/context/AuthContext';
 import { buttonVariants } from "@/components/ui/button";
 import { toast } from "react-toastify";
+import BorrowCard from "@/components/payments/BorrowCard";
+import SupplyCard from "@/components/payments/SupplyCard";
 
 const Interact: NextPage = () => {
 
@@ -99,6 +101,8 @@ const Interact: NextPage = () => {
             safeTxGas: supply.gasLimit?.toString()
         }
 
+        console.log("Safe transaction data", safeTransactionData);
+
         const safeTransaction = await safeSDKKit?.createTransaction({ safeTransactionData });
         console.log("safeTransaction", safeTransaction);
 
@@ -108,7 +112,7 @@ const Interact: NextPage = () => {
 
         const txResult = await safeSDKKit?.executeTransaction(tx);
 
-        txResult? toast.success("Successfully supplied") : toast.error("Transaction Failed");
+        txResult ? toast.success("Successfully supplied") : toast.error("Transaction Failed");
 
         console.log("txResult", txResult)
 
@@ -149,7 +153,7 @@ const Interact: NextPage = () => {
 
         const txResult = await safeSDKKit?.executeTransaction(tx);
 
-        txResult? toast.success("Successfully repayed ✅") : toast.error("Repayment Failed ❌");
+        txResult ? toast.success("Successfully repayed ✅") : toast.error("Repayment Failed ❌");
 
         console.log("txResult", txResult)
 
@@ -165,6 +169,11 @@ const Interact: NextPage = () => {
                 <button className={buttonVariants()} onClick={borrowGho}>Mint GHO</button>
                 <button className={buttonVariants()} onClick={supplyasset}>Supply </button>
                 <button className={buttonVariants()} onClick={repayasset}>Repay</button>
+            </div>
+
+            <div className="flex flex-row gap-4 mx-4">
+                <BorrowCard />
+                <SupplyCard />
             </div>
         </main>
     );

@@ -14,7 +14,7 @@ const Address = ({
 }: any) => {
 
     const addressLabel = useMemoizedAddressLabel(address);
-    const blockExplorerLink = `https://goerli.etherscan.io/${isTransactionAddress ? 'tx' : 'address'
+    const blockExplorerLink = `https://sepolia.etherscan.io/${isTransactionAddress ? 'tx' : 'address'
         }/${address}`
 
     return (

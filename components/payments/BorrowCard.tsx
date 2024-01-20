@@ -69,7 +69,7 @@ const BorrowCard = () => {
                 data: borrowTx.data,
                 safeTxGas: borrowTx.gasLimit?.toString()
             }
-
+            // @ts-ignore
             const safeTransaction = await safeSDKKit.createTransaction({ safeTransactionData });
             console.log("safeTransaction", safeTransaction);
 

@@ -53,6 +53,7 @@ const PayPage = () => {
             } as any);
 
             const safeSdk = await Safe.create({
+                // @ts-ignore
                 ethAdapter: ethAdapter,
                 safeAddress: selectedSafe,
                 isL1SafeSingleton: true

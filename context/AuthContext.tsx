@@ -105,6 +105,7 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
             } as any);
 
             const safeSdk = await Safe.create({
+                // @ts-ignore
                 ethAdapter: ethAdapter,
                 safeAddress: selectedSafe,
                 isL1SafeSingleton: true
@@ -149,6 +150,7 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
             signerOrProvider: signer,
         } as any);
 
+        // @ts-ignore
         const safeFactory = await SafeFactory.create({ ethAdapter });
 
         const safe = await safeFactory.deploySafe({

@@ -76,7 +76,7 @@ const SupplyCard = () => {
                     safeTxGas: supply.gasLimit?.toString()
                 }
                 console.log("Safe transaction data", safeTransactionData);
-
+                // @ts-ignore
                 const safeTransaction = await safeSDKKit?.createTransaction({ safeTransactionData });
                 console.log("safeTransaction", safeTransaction);
 

@@ -57,7 +57,7 @@ export const BorrowAssetToken = [
         id: '1',
         logo: 'https://gho.aave.com/icons/tokens/gho.svg',
         name: 'GHO',
-        contractAddress: '0xcbE9771eD31e761b744D3cB9eF78A1f32DD99211',
+        contractAddress: '0xc4bF5CbDaBE595361438F8c6a187bDc330539c60 ',
         decimal: 18,
     },
     {

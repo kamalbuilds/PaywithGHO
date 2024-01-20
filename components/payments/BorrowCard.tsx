@@ -27,7 +27,6 @@ import { toast } from 'react-toastify';
 
 
 
-
 const BorrowCard = () => {
 
     const { provider, safeSDKKit, selectedSafe } = useAuth();
@@ -68,7 +67,7 @@ const BorrowCard = () => {
                 to: borrowTx.to,
                 value: parseUnits("0", 18).toString(),
                 data: borrowTx.data,
-                safeTxGas: borrowTx.gasLimit
+                safeTxGas: borrowTx.gasLimit?.toString()
             }
 
             const safeTransaction = await safeSDKKit.createTransaction({ safeTransactionData });
@@ -78,8 +77,10 @@ const BorrowCard = () => {
             console.log("tx", tx);
 
             const txResult = await safeSDKKit.executeTransaction(tx);
-            console.log("txResult", txResult)
 
+            console.log("txResult", txResult);
+            toast.success(txResult.hash);
+            txResult ? toast.success("Successfully repayed ✅") : toast.error("Repayment Failed ❌");
         }
     };
 

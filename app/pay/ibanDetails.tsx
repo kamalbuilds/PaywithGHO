@@ -71,10 +71,7 @@ const IbanDetails = ({
                                                     <Address address={order.txHashes[0]} showBlockExplorerLink />
                                                 </div>
                                             </div>
-                                            <div className='flex flex-row justify-between'>
-                                                <div className='text-lg font-600'>Date and time</div>
-                                                <div className='text-sm font-400 text-grey-400'>18/01/2024 - 03:27:34</div>
-                                            </div>
+
                                         </div>
 
                                         <div className='flex flex-col gap-2 flex-1'>

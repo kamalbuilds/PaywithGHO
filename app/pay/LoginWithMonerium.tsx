@@ -22,7 +22,6 @@ function LoginWithMonerium({ safe, threshold, onLogin }: LoginWithMoneriumProps)
             <div className="mt-4">
                 You now can login with Monerium and link the selected Safe with your account
             </div>
-            <br />
             <button onClick={onLogin} className={buttonVariants()} >
                 Login with Monerium
             </button>

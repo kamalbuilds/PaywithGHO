@@ -12,6 +12,8 @@ import MoneriumContextProvider from '@/context/MoneriumContex';
 import ClientLayout from './Web3Provider';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
+import '@uniswap/widgets/fonts.css'
+
 
 export const metadata: Metadata = {
   title: {
@@ -48,16 +50,16 @@ export default function RootLayout({ children }: RootLayoutProps) {
         >
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <ClientLayout>
-            <div className="relative flex min-h-screen flex-col">
-              <AuthContextProvider>
-              <MoneriumContextProvider>
-              <SiteHeader />
-              <ToastContainer />
-              <div className="flex-1">{children}</div>
-                </MoneriumContextProvider>
+              <div className="relative flex min-h-screen flex-col">
+                <AuthContextProvider>
+                  <MoneriumContextProvider>
+                    <SiteHeader />
+                    <ToastContainer />
+                    <div className="flex-1">{children}</div>
+                  </MoneriumContextProvider>
                 </AuthContextProvider>
-            </div>
-            <TailwindIndicator />
+              </div>
+              <TailwindIndicator />
             </ClientLayout>
           </ThemeProvider>
         </body>

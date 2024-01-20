@@ -26,6 +26,7 @@ type AuthContextType = {
     logOut?: () => void
     deployNewSafeWallet?: () => void
     safeSDKKit?: Safe
+    safeAuthPack?: any
 
 }
 
@@ -55,8 +56,8 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
                 buttonPosition: 'bottom-right',
                 showWidgetButton: true,
                 chainConfig: {
-                    chainId: '0xaa36a7', 
-                    rpcTarget: 'https://eth-sepolia.g.alchemy.com/v2/DU0xK0nck0Bt7hWgodif5n_UctwzaX5R' 
+                    chainId: '0xaa36a7',
+                    rpcTarget: 'https://eth-sepolia.g.alchemy.com/v2/DU0xK0nck0Bt7hWgodif5n_UctwzaX5R'
                     // chainId: '0x5',
                     // rpcTarget: 'https://eth-goerli.g.alchemy.com/v2/F1Pki8Inoa2E7rVheYmIEBQU-VA2tpv8'
                 }
@@ -109,7 +110,6 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
                 isL1SafeSingleton: true
             })
 
-            console.log("safe sdk", safeSdk)
             setSafeSDKKit(safeSdk);
 
         })()
@@ -143,7 +143,6 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
         if (!provider) return
 
         const signer = await provider.getSigner();
-        console.log("Provider", provider, signer);
 
         const ethAdapter = new EthersAdapter({
             ethers,
@@ -155,8 +154,6 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
         const safe = await safeFactory.deploySafe({
             safeAccountConfig: { threshold: 1, owners: [safeAuthSignInResponse?.eoa as string] },
         });
-        console.log("SAFE Created!", await safe.getAddress());
-        console.log("SAFE Created!", await safe.getAddress());
 
         const safeAddress = await safe.getAddress();
         if (safeAddress) {
@@ -179,7 +176,8 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
                 setSelectedSafe,
                 deployNewSafeWallet,
                 isSafeLoading,
-                safeSDKKit
+                safeSDKKit,
+                safeAuthPack
             }}
         >
             {children}

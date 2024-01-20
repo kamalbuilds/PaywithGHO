@@ -10,6 +10,7 @@ import IbanDetails from './ibanDetails';
 import PayForm from './PayForm';
 import { buttonVariants } from '@/components/ui/button';
 import { toast } from 'react-toastify';
+import Userbalance from './Userbalance';
 
 const MONERIUM_TOKEN = 'monerium_token'
 
@@ -36,7 +37,6 @@ const PayPage = () => {
     const notify = () => toast.success("Safe Deployed!");
 
     useEffect(() => {
-        console.log("Auth Provider and selected safe", authProvider, selectedSafe);
         ; (async () => {
             if (!authProvider || !selectedSafe) return
 
@@ -68,19 +68,14 @@ const PayPage = () => {
                 environment: 'sandbox'
             })
 
-            console.log("Monerium Pack 1", pack);
-
-
             await pack.init({
                 safeSdk
             })
 
-            console.log("Monerium Pack 2", pack);
             setMoneriumPack(pack)
             setSettingMonerium(false);
 
             pack.subscribe(OrderState.pending, (notification) => {
-                console.log("State is pending.....")
                 setOrderState(notification.meta.state)
             })
 
@@ -114,41 +109,23 @@ const PayPage = () => {
         const authCode = new URLSearchParams(window.location.search).get('code') || undefined
         const refreshToken = localStorage.getItem(MONERIUM_TOKEN) || undefined
 
-        console.log("Auth code and token", authCode, refreshToken);
-
         if (authCode || refreshToken) startMoneriumFlow(authCode, refreshToken)
     }, [moneriumPack])
 
     const startMoneriumFlow = async (authCode?: string, refreshToken?: string) => {
-        console.log("Monerium pack", moneriumPack);
-
         if (!moneriumPack) return
 
         setIsLoadingIBAN(true);
-        console.log("Pack is starting....")
-        // const moneriumClient = await moneriumPack?.open({});
-
         const moneriumClient = await moneriumPack.open({
             redirectUrl: 'http://localhost:3000/pay',
             authCode,
             refreshToken
         })
 
-        console.log("Pack found data....")
-
-
         const authContext = await moneriumClient.getAuthContext()
         const profile = await moneriumClient.getProfile(authContext.defaultProfile)
         const balances = await moneriumClient.getBalances()
         const orders = await moneriumClient.getOrders()
-
-        console.group('Monerium data')
-        console.log('AuthContext', authContext)
-        console.log('Profile', profile)
-        console.log('Balances', balances)
-        console.log('Orders', orders)
-        console.log('Bearer Profile', moneriumClient.bearerProfile)
-        console.groupEnd()
 
         setprofile(profile);
         setBalances(balances);
@@ -184,21 +161,26 @@ const PayPage = () => {
                     </div>
                 ) : (
                     <>
+
                         {authContext ? (
-                            <div className='flex flex-col gap-20'>
-                                <PayForm
-                                    moneriumClient={moneriumClient}
-                                    closeMoneriumFlow={closeMoneriumFlow}
-                                    protocolKit={protocolKit}
-                                    moneriumPack={moneriumPack}
-                                />
-                                <IbanDetails
-                                    authContext={authContext}
-                                    profile={profile}
-                                    balances={balances}
-                                    orders={orders}
-                                />
-                            </div>
+                            <>
+                                <div className='flex flex-col gap-8'>
+                                    <PayForm
+                                        moneriumClient={moneriumClient}
+                                        closeMoneriumFlow={closeMoneriumFlow}
+                                        protocolKit={protocolKit}
+                                        moneriumPack={moneriumPack}
+                                        balances={balances}
+                                    />
+
+                                    <IbanDetails
+                                        authContext={authContext}
+                                        profile={profile}
+                                        balances={balances}
+                                        orders={orders}
+                                    />
+                                </div>
+                            </>
                         ) : (
                             <>
                                 {!selectedSafe && <div className='flex '>

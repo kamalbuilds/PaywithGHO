@@ -21,8 +21,6 @@ const Interact: NextPage = () => {
     const { provider, safeSDKKit, selectedSafe } = useAuth();
     const signer = provider?.getSigner();
 
-    console.log(signer, safeSDKKit, selectedSafe, "signer");
-
     const borrowGho = async () => {
         if (provider && signer && safeSDKKit) {
 
@@ -33,7 +31,6 @@ const Interact: NextPage = () => {
                 POOL: AaveV3Sepolia.POOL,
             });
 
-            console.log("pool", pool);
             const borrowTx = pool.borrowTxBuilder.generateTxData({
                 user: selectedSafe || "",
                 reserve: "0xcbE9771eD31e761b744D3cB9eF78A1f32DD99211",
@@ -41,7 +38,6 @@ const Interact: NextPage = () => {
                 interestRateMode: InterestRate.Variable,
             });
             console.log("Borrow Tx", borrowTx);
-
 
             const safeTransactionData = {
                 to: borrowTx.to,
@@ -54,28 +50,11 @@ const Interact: NextPage = () => {
             console.log("safeTransaction", safeTransaction);
 
             const tx = await safeSDKKit.signTransaction(safeTransaction);
-
             console.log("tx", tx);
 
             const txResult = await safeSDKKit.executeTransaction(tx);
-
             console.log("txResult", txResult)
 
-
-
-            //TODO @abhishek-01k 
-            // signer
-            //     .sendTransaction(borrowTx)
-            //     .then((txResponse) => {
-            //         setTxStatus(`Tx submitted with hash ${txResponse.hash}`);
-            //         return txResponse.wait(); // Wait for the transaction to be confirmed
-            //     })
-            //     .then((txReceipt) => {
-            //         setTxStatus(`Tx confirmed with hash ${txReceipt.transactionHash}`);
-            //     })
-            //     .catch((error) => {
-            //         setTxStatus(`Tx failed :( with error ${error.toString()}`);
-            //     });
         }
     };
 
@@ -92,8 +71,6 @@ const Interact: NextPage = () => {
             onBehalfOf: selectedSafe,
         });
 
-        console.log("Supply", supply);
-
         const safeTransactionData = {
             to: supply.to,
             value: parseUnits("0", 18).toString(), // ethers BigNumber
@@ -104,10 +81,7 @@ const Interact: NextPage = () => {
         console.log("Safe transaction data", safeTransactionData);
 
         const safeTransaction = await safeSDKKit?.createTransaction({ safeTransactionData });
-        console.log("safeTransaction", safeTransaction);
-
         const tx = await safeSDKKit?.signTransaction(safeTransaction);
-
         console.log("tx", tx);
 
         const txResult = await safeSDKKit?.executeTransaction(tx);
@@ -116,7 +90,6 @@ const Interact: NextPage = () => {
 
         console.log("txResult", txResult)
 
-        // end
     }
 
     const repayasset = async () => {

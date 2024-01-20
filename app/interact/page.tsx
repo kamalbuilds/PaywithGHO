@@ -139,7 +139,7 @@ const Interact: NextPage = () => {
 
   return (
     <main>
-      <h1 className='text-4xl font-[700] text-center my-8'>Supply or Borrow </h1>
+      <h1 className='text-4xl font-[700] text-center my-8'>Supply or Borrow from your Safe Wallet</h1>
       {/* {address && <h3>Address: {address}</h3>}
       {txStatus && <p>Status: {txStatus}</p>}
       <div className="flex flex-row gap-4">

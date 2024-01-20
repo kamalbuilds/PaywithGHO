@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { createContext, useEffect, useState } from "react";
 import {
     SafeAuthPack,
@@ -6,8 +6,7 @@ import {
     AuthKitSignInData,
     SafeAuthInitOptions,
 } from '@safe-global/auth-kit'
-import Safe, { SafeFactory, SafeAccountConfig, Web3Adapter, EthersAdapter } from '@safe-global/protocol-kit';
-import { Web3Provider } from "@ethersproject/providers";
+import Safe, { SafeFactory, EthersAdapter } from '@safe-global/protocol-kit';
 import { ethers } from "ethers";
 import { toast } from "react-toastify";
 
@@ -89,7 +88,7 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
     useEffect(() => {
         if (!safeAuthPack || !isAuthenticated) return
 
-        setProvider(new Web3Provider(safeAuthPack.getProvider() as any))
+        setProvider(new ethers.providers.Web3Provider(safeAuthPack.getProvider() as any))
     }, [isAuthenticated])
 
     // Safe sdk initiate

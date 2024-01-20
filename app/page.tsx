@@ -2,6 +2,7 @@
 
 import { Streamgho } from "@/components/Streamgho"
 import BorrowCard from "@/components/payments/BorrowCard";
+import RepayCard from "@/components/payments/RepayCard";
 import SupplyCard from "@/components/payments/SupplyCard";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/AuthContext";
@@ -57,6 +58,7 @@ export default function IndexPage() {
         <div className="flex flex-row gap-4 mx-4">
           <BorrowCard />
           <SupplyCard />
+          <RepayCard />
         </div>
       </div>}
 

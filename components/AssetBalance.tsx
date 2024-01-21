@@ -59,7 +59,7 @@ const AssetBalance = ({ userDetails }: any) => {
                             </div>
                         </div>
                         <div className='flex flex-col gap-4'>
-                            {userDetails.userReservesData.map((reserve, index) => {
+                            {userDetails.userReservesData.map((reserve : any, index : any)  => {
                                 return (
                                     <div key={index}>
                                         <AssetDetails reserve={reserve} />

@@ -70,6 +70,7 @@ const RepayCard = () => {
                 safeTxGas: repay.gasLimit?.toString() || "0"
             }
 
+            // @ts-ignore
             const safeTransaction = await safeSDKKit?.createTransaction({ safeTransactionData });
             console.log("safeTransaction", safeTransaction);
 

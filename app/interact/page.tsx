@@ -6,7 +6,7 @@ import { ethers } from "ethers";
 import { parseUnits } from "ethers/lib/utils";
 import { useEffect, useState } from "react";
 import { InterestRate, Pool, PoolBundle } from "@aave/contract-helpers";
-import { AaveV3Sepolia } from "@bgd-labs/aave-address-book";
+import { AaveV3Ethereum , AaveV3Sepolia } from "@bgd-labs/aave-address-book";
 import { AuthContextProvider, useAuth } from '@/context/AuthContext';
 import { buttonVariants } from "@/components/ui/button";
 import { toast } from "react-toastify";
@@ -45,18 +45,18 @@ const Interact: NextPage = () => {
   // View contract used to fetch all reserves data (including market base currency data), and user reserves
   // Using Aave V3 Eth Mainnet address for demo
   const poolDataProviderContract = new UiPoolDataProvider({
-    uiPoolDataProviderAddress: markets.AaveV3Sepolia.UI_POOL_DATA_PROVIDER,
+    uiPoolDataProviderAddress: markets.AaveV3Ethereum.UI_POOL_DATA_PROVIDER,
     provider,
-    chainId: ChainId.sepolia,
+    chainId: ChainId.mainnet,
   });
 
   // View contract used to fetch all reserve incentives (APRs), and user incentives
   // Using Aave V3 Eth Mainnet address for demo
   const incentiveDataProviderContract = new UiIncentiveDataProvider({
     uiIncentiveDataProviderAddress:
-      markets.AaveV3Sepolia.UI_INCENTIVE_DATA_PROVIDER,
+      markets.AaveV3Ethereum.UI_INCENTIVE_DATA_PROVIDER,
     provider,
-    chainId: ChainId.sepolia,
+    chainId: ChainId.mainnet,
   });
 
   console.log("poolDataProviderContract", poolDataProviderContract, incentiveDataProviderContract, "incentiveDataProviderContract");
@@ -65,13 +65,13 @@ const Interact: NextPage = () => {
     // Object containing array of pool reserves and market base currency data
     // { reservesArray, baseCurrencyData }
     const reserves = await poolDataProviderContract.getReservesHumanized({
-      lendingPoolAddressProvider: markets.AaveV3Sepolia.POOL_ADDRESSES_PROVIDER,
+      lendingPoolAddressProvider: markets.AaveV3Ethereum.POOL_ADDRESSES_PROVIDER,
     });
 
     // Object containing array or users aave positions and active eMode category
     // { userReserves, userEmodeCategoryId }
     const userReserves = await poolDataProviderContract.getUserReservesHumanized({
-      lendingPoolAddressProvider: markets.AaveV3Sepolia.POOL_ADDRESSES_PROVIDER,
+      lendingPoolAddressProvider: markets.AaveV3Ethereum.POOL_ADDRESSES_PROVIDER,
       user: currentAccount,
     });
 
@@ -79,14 +79,14 @@ const Interact: NextPage = () => {
     const reserveIncentives =
       await incentiveDataProviderContract.getReservesIncentivesDataHumanized({
         lendingPoolAddressProvider:
-          markets.AaveV3Sepolia.POOL_ADDRESSES_PROVIDER,
+          markets.AaveV3Ethereum.POOL_ADDRESSES_PROVIDER,
       });
 
     // Dictionary of claimable user incentives
     const userIncentives =
       await incentiveDataProviderContract.getUserReservesIncentivesDataHumanized({
         lendingPoolAddressProvider:
-          markets.AaveV3Sepolia.POOL_ADDRESSES_PROVIDER,
+          markets.AaveV3Ethereum.POOL_ADDRESSES_PROVIDER,
         user: currentAccount,
       });
 

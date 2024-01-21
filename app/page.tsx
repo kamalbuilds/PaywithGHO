@@ -20,8 +20,8 @@ export default function IndexPage() {
           <h1 className="text-3xl font-extrabold leading-tight tracking-tighter md:text-4xl">
             Welcome to <span className="text-purple-500"> PAYWithGHO </span>
           </h1>
-          <Image
-            src={gho}
+          <img
+            src="../lib/gho.png"
             className="right-0"
             alt="gho"
             width={150}

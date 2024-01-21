@@ -21,7 +21,7 @@ import { BorrowTokenList } from '@/config/asset';
 import { toast } from 'react-toastify';
 import { InterestRate, PoolBundle } from '@aave/contract-helpers';
 import { parseUnits } from 'viem';
-import { AaveV3Sepolia } from '@bgd-labs/aave-address-book';
+import { AaveV3Ethereum , AaveV3Sepolia } from '@bgd-labs/aave-address-book';
 import Image from 'next/image';
 import { Button } from '../ui/button';
 
@@ -50,7 +50,7 @@ const RepayCard = () => {
         if (provider && safeSDKKit) {
 
             const pool = new PoolBundle(provider, {
-                POOL: AaveV3Sepolia.POOL,
+                POOL: AaveV3Ethereum.POOL,
             });
             const s_amount = amount.toString();
             const repay = await pool.repayTxBuilder.generateTxData({

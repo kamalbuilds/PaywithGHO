@@ -2,9 +2,9 @@
 
 import { SiweMessage } from 'siwe'
 import { FC, PropsWithChildren } from 'react'
-import { WagmiConfig, createConfig } from 'wagmi'
+import { WagmiConfig, createConfig, mainnet } from 'wagmi'
 import { ConnectKitProvider, SIWEConfig, SIWEProvider, getDefaultConfig } from 'connectkit'
-import { sepolia } from 'wagmi'
+import { sepolia  } from 'wagmi'
 
 const APP_NAME = 'My ConnectKit App'
 const COOKIE_NAME = 'web3session'
@@ -14,7 +14,7 @@ const config = createConfig(
 		appName: APP_NAME,
 		infuraId: process.env.NEXT_PUBLIC_INFURA_ID,
 		walletConnectProjectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID!,
-		chains: [ sepolia],
+		chains: [ sepolia , mainnet],
 		alchemyId:  process.env.NEXT_PUBLIC_APP_ALCHEMY_ID,
 	})
 )
@@ -56,9 +56,9 @@ const siweConfig = {
 
 const Web3Provider: FC<PropsWithChildren<{}>> = ({ children }) => (
 	<WagmiConfig config={config}>
-		{/* <SIWEProvider {...siweConfig}> */}
+		<SIWEProvider {...siweConfig}>
 			<ConnectKitProvider>{children}</ConnectKitProvider>
-		{/* </SIWEProvider> */}
+		</SIWEProvider>
 	</WagmiConfig>
 )
 

@@ -19,7 +19,7 @@ import {
 import { Button, buttonVariants } from '../ui/button';
 import { useAuth } from '@/context/AuthContext';
 import { InterestRate, Pool, PoolBundle } from "@aave/contract-helpers";
-import { AaveV3Sepolia } from "@bgd-labs/aave-address-book";
+import { AaveV3Sepolia , AaveV3Ethereum} from "@bgd-labs/aave-address-book";
 import { parseUnits } from 'viem';
 import { toast } from 'react-toastify';
 import { SupplyAssetToken } from '@/config/asset';
@@ -56,7 +56,7 @@ const SupplyCard = () => {
 
             try {
                 const pool = new PoolBundle(provider, {
-                    POOL: AaveV3Sepolia.POOL,
+                    POOL: AaveV3Ethereum.POOL,
                 });
 
                 const s_amount = amount.toString();
@@ -116,7 +116,7 @@ const SupplyCard = () => {
             const contract = new ethers.Contract(tokenAddress, ['function approve(address spender, uint256 amount)'], signer);
 
             const s_amount = amount?.toString();
-            const data = contract.interface.encodeFunctionData('approve', [AaveV3Sepolia.POOL, parseUnits(s_amount, selectedToken.decimal).toString()]);
+            const data = contract.interface.encodeFunctionData('approve', [AaveV3Ethereum.POOL, parseUnits(s_amount, selectedToken.decimal).toString()]);
 
             const safeTransactionData = {
                 to: tokenAddress,

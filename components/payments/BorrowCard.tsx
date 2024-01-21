@@ -21,7 +21,7 @@ import Image from 'next/image';
 import { useAuth } from '@/context/AuthContext';
 import { Button } from '../ui/button';
 import { InterestRate, PoolBundle } from '@aave/contract-helpers';
-import { AaveV3Sepolia } from '@bgd-labs/aave-address-book';
+import { AaveV3Ethereum , AaveV3Sepolia } from '@bgd-labs/aave-address-book';
 import { parseUnits } from 'ethers/lib/utils';
 import { toast } from 'react-toastify';
 
@@ -50,7 +50,7 @@ const BorrowCard = () => {
             const signer = provider?.getSigner();
 
             const pool = new PoolBundle(provider, {
-                POOL: AaveV3Sepolia.POOL,
+                POOL: AaveV3Ethereum.POOL,
             });
 
             const s_amount = amount.toString();

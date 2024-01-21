@@ -143,7 +143,7 @@ const BorrowCard = () => {
                 </form>
             </CardContent>
             <CardFooter>
-                <Button onClick={handleBorrow} className=''>Borrow Token</Button>
+                <Button onClick={handleBorrow} className=''>Borrow Token from AAVEV3 POOL</Button>
             </CardFooter>
         </Card>
 

@@ -9,6 +9,7 @@ import { ThemeToggle } from "@/components/theme-toggle"
 import { useAuth } from '@/context/AuthContext';
 import React from 'react';
 import Address from './Address';
+import { ConnectKitButton } from "connectkit";
 
 export function SiteHeader() {
 
@@ -53,8 +54,9 @@ export function SiteHeader() {
             ) : (
               <>
                 <div className='border rounded-lg border-gray-600 px-2 py-1 my-4 cursor-pointer' onClick={logIn}>
-                  Sign in
+                  Sign in with Google
                 </div>
+                <ConnectKitButton />
               </>
             )}
             <ThemeToggle />

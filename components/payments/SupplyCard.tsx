@@ -204,7 +204,7 @@ const SupplyCard = () => {
                     <button className={buttonVariants()} onClick={handleSupply}>
                         Supply {selectedToken.name}
                     </button> :
-                    <Button variant="outline" disabled={true} className=''>Supply Token</Button>
+                    <Button variant="outline" disabled={true} className=''>Supply Token from AAVEV3 Pool</Button>
                 }
 
             </CardFooter>

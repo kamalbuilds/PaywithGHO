@@ -14,7 +14,7 @@ export default function IndexPage() {
       <div className="flex flex-col gap-2 items-center">
         <div className="flex flex-col items-center justify-center mt-16">
           <h1 className="text-3xl font-extrabold leading-tight tracking-tighter md:text-4xl">
-            Welcome to <span className="text-purple-500"> PAY_With_GHO </span>
+            Welcome to <span className="text-purple-500"> PAYWithGHO </span>
           </h1>
 
           <div className="flex flex-col gap-4 mt-8">
@@ -27,14 +27,14 @@ export default function IndexPage() {
             </p>
 
             <p className="max-w-[700px] text-lg text-muted-foreground">
-              🫣 Additionally, You can stream GHO token at the rate that you want.
+              🫣 You can wrap and stream GHO tokens aevery minute to your recipients
             </p>
           </div>
         </div>
 
         <div className="flex mt-12 gap-4 flex-col md:flex-row w-[100%] justify-center">
           <Streamgho />
-          {!isLoggedIn ? <Button onClick={logIn}>Sign In with safe</Button> : <Link href='/interact'><Button>Supply/Borrow</Button></Link>}
+          {!isLoggedIn ? <Button onClick={logIn}>Sign In with Google</Button> : <Link href='/interact'><Button>Supply/Borrow</Button></Link>}
         </div>
       </div>
 

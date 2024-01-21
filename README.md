@@ -10,7 +10,7 @@ PaywithGHO focuses on increasing the accessibility of GHO by offering features l
 
 ### 1. Account Abstraction
 
-Users can seamlessly interact with the AAVEV3 Pool by connecting their Google Account. The easy onboarding process provides access to their Safe ERC-4337 Account within our Dapp, allowing them to perform actions such as supplying, borrowing, and repay their tokens based on their Health.
+Users can seamlessly interact with the AAVEV3 Pool by connecting their Google Account. The easy onboarding process provides access to their Safe ERC-4337 Account within our Dapp, allowing them to perform actions such as supplying, borrowing, and repay.
 
 ### 2. Seamless GHO Payments
 
@@ -28,6 +28,14 @@ Users have the capability to wrap and stream GHO Tokens every minute, enhancing 
 
 PaywithGHO features a seamless onramp and offramp experience powered by Monerium. Users can easily convert their assets into EURe, an E-money for EUR, using the Uniswap Widget on our Dapp. The offramp process involves connecting to Monerium, where users can utilize the "PAY with IBAN" feature for a straightforward offramp experience.
 
+### 6. GHOx Super Token on Superfluid
+
+PaywithGHO has deployed a wrapper token for GHO on Superfluid by creating a contract. The GHO Super Token (GHOx) has been introduced, maintaining a 1:1 ratio with the original GHO token. This innovation allows users to wrap their GHO tokens into GHOx Super Tokens and create a flow of GHO tokens every minute based on their specific requirements.
+
+### 7. Dashboard Listing
+
+We're proud to announce that PaywithGHO and the GHOx Super Token have been listed on the Superfluid dashboard. Check it out [here](https://github.com/superfluid-finance/assets/issues/198).
+
 ## Offramp Process
 
 1. **Swap GHO to EURe:** Utilize the Uniswap Widget on our Dapp to swap GHO to EURe successfully.
@@ -42,4 +50,4 @@ PaywithGHO features a seamless onramp and offramp experience powered by Monerium
 
 ![Screenshot 2](https://github.com/kamalbuilds/PaywithGHO/assets/77395788/7d3e6366-4f20-4994-b1f0-d3c392e459ac)
 
-Explore the power of PaywithGHO for a seamless and efficient payment experience with GHO Tokens.
+Explore the power of PaywithGHO for a seamless and efficient payment experience with GHO Tokens, now enhanced with the groundbreaking GHOx Super Token on Superfluid.

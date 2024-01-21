@@ -5,7 +5,6 @@ import BorrowCard from "@/components/payments/BorrowCard";
 import SupplyCard from "@/components/payments/SupplyCard";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/AuthContext";
-import Link from "next/link";
 
 export default function IndexPage() {
 

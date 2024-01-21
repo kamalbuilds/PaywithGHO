@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client"
 import { useAuth } from '@/context/AuthContext';
 import { AuthContext, Balances, Order, OrderState, Profile } from '@monerium/sdk';

@@ -16,25 +16,27 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import { BorrowTokenList } from '@/config/asset';
-import Image from 'next/image';
 import { useAuth } from '@/context/AuthContext';
-import { Button } from '../ui/button';
-import { InterestRate, PoolBundle } from '@aave/contract-helpers';
-import { AaveV3Sepolia } from '@bgd-labs/aave-address-book';
-import { parseUnits } from 'ethers/lib/utils';
+import { BorrowTokenList } from '@/config/asset';
 import { toast } from 'react-toastify';
+import { InterestRate, PoolBundle } from '@aave/contract-helpers';
+import { parseUnits } from 'viem';
+import { AaveV3Sepolia } from '@bgd-labs/aave-address-book';
+import Image from 'next/image';
+import { Button } from '../ui/button';
 
-
-
-const BorrowCard = () => {
+const RepayCard = () => {
 
     const { provider, safeSDKKit, selectedSafe } = useAuth();
 
     const [amount, setAmount] = useState<any>();
     const [selectedToken, setSelectedToken] = useState<any>();
+    const handleSelect = (value: string) => {
+        const selectedToken = BorrowTokenList.find(obj => obj.name === value);
+        setSelectedToken(selectedToken);
+    }
 
-    const handleBorrow = async () => {
+    const handleRepay = async () => {
 
         if (!amount) {
             toast.error("Please fill Amount");
@@ -47,53 +49,49 @@ const BorrowCard = () => {
 
         if (provider && safeSDKKit) {
 
-            const signer = provider?.getSigner();
-
             const pool = new PoolBundle(provider, {
                 POOL: AaveV3Sepolia.POOL,
             });
-
             const s_amount = amount.toString();
-            const borrowTx = pool.borrowTxBuilder.generateTxData({
+            const repay = await pool.repayTxBuilder.generateTxData({
                 user: selectedSafe || "",
                 reserve: selectedToken.contractAddress,
                 amount: parseUnits(s_amount, selectedToken.decimal).toString(),
+                onBehalfOf: selectedSafe,
                 interestRateMode: InterestRate.Variable,
             });
-            console.log("Borrow Tx", borrowTx);
 
+            console.log("repay", repay);
 
             const safeTransactionData = {
-                to: borrowTx.to,
-                value: parseUnits("0", 18).toString(),
-                data: borrowTx.data,
-                safeTxGas: borrowTx.gasLimit?.toString()
+                to: repay.to,
+                value: parseUnits("0", 18).toString(), // ethers BigNumber
+                data: repay.data,
+                safeTxGas: repay.gasLimit?.toString() || "0"
             }
-            // @ts-ignore
-            const safeTransaction = await safeSDKKit.createTransaction({ safeTransactionData });
+
+            const safeTransaction = await safeSDKKit?.createTransaction({ safeTransactionData });
             console.log("safeTransaction", safeTransaction);
 
-            const tx = await safeSDKKit.signTransaction(safeTransaction);
+            const tx = await safeSDKKit?.signTransaction(safeTransaction);
+
             console.log("tx", tx);
 
-            const txResult = await safeSDKKit.executeTransaction(tx);
+            const txResult = await safeSDKKit?.executeTransaction(tx);
+            console.log("txResult", txResult)
 
-            console.log("txResult", txResult);
-            toast.success(txResult.hash);
             txResult ? toast.success("Successfully repayed ✅") : toast.error("Repayment Failed ❌");
+
         }
     };
 
-    const handleSelect = (value: string) => {
-        const selectedToken = BorrowTokenList.find(obj => obj.name === value);
-        setSelectedToken(selectedToken);
-    }
+
 
     return (
         <Card className='flex flex-col flex-1'>
             <CardHeader>
-                <CardTitle>Borrow Asset</CardTitle>
-                <CardDescription>Borrow asset based on supply</CardDescription>
+                <CardTitle>Repay Token</CardTitle>
+                <CardDescription>Form to Repay Amount</CardDescription>
             </CardHeader>
             <CardContent>
                 <form>
@@ -143,11 +141,10 @@ const BorrowCard = () => {
                 </form>
             </CardContent>
             <CardFooter>
-                <Button onClick={handleBorrow} className=''>Borrow Token</Button>
+                <Button onClick={handleRepay} className=''>Repay Token</Button>
             </CardFooter>
         </Card>
-
     );
 };
 
-export default BorrowCard;
+export default RepayCard;

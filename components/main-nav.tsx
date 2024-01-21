@@ -37,20 +37,6 @@ export function MainNav({ items }: MainNavProps) {
         </nav>
       ) : null}
 
-
-
-      <Link
-        href='/'
-        className={cn(
-          "flex items-center text-sm font-medium text-muted-foreground",
-          // item.disabled && "cursor-not-allowed opacity-80"
-        )}
-      >
-        Profile
-      </Link>
-
-
-
     </div>
   )
 }

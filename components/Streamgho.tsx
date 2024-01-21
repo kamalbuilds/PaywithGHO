@@ -89,7 +89,7 @@ export function Streamgho() {
       walletManager={walletManager}
     >
       {({ openModal }) => (
-        <Button variant='outline' onClick={() => openModal()}>Stream GHO as Payments</Button>
+        <Button variant='outline' onClick={() => openModal()} className="p-4">Stream GHO Tokens</Button>
       )}
     </SuperfluidWidget>
   )

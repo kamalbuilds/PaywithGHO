@@ -134,6 +134,9 @@ const SupplyCard = () => {
             const txResult = await safeSDKKit.executeTransaction(tx);
 
             console.log("txResult", txResult)
+            if (txResult) {
+                toast.success("Approved Successfully");
+            }
 
         }
 

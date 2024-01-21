@@ -9,10 +9,10 @@ export const siteConfig = {
       title: "Home",
       href: "/",
     },
-    // {
-    //   title: "Interact",
-    //   href: "/interact"
-    // },
+    {
+      title: "Supply/Borrow",
+      href: "/interact"
+    },
     {
       title: "Widget",
       href: "/widget"

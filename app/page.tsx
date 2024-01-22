@@ -9,6 +9,7 @@ import Link from "next/link";
 
 export default function IndexPage() {
   const { logIn, isLoggedIn, data } = useAuth();
+  console.log("Data", data);
   return (
     <section className="container grid items-center gap-6 pb-8 pt-6 md:py-10">
       <div className="flex flex-col gap-2 items-center">

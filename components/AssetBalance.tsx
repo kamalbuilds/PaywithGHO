@@ -15,6 +15,11 @@ import RepayCard from './payments/RepayCard';
 
 const AssetBalance = ({ userDetails }: any) => {
 
+    const reserveFilter = userDetails.userReservesData.filter((reserve) => {
+        return reserve.totalBorrowsMarketReferenceCurrency > 0
+    })
+
+    console.log("Reserve filter", reserveFilter);
     return (
         <div className='mx-8 my-8'>
 
@@ -59,7 +64,7 @@ const AssetBalance = ({ userDetails }: any) => {
                             </div>
                         </div>
                         <div className='flex flex-col gap-4'>
-                            {userDetails.userReservesData.map((reserve, index) => {
+                            {reserveFilter.map((reserve, index) => {
                                 return (
                                     <div key={index}>
                                         <AssetDetails reserve={reserve} />

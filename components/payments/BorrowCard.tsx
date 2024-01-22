@@ -54,6 +54,7 @@ const BorrowCard = () => {
             });
 
             const s_amount = amount.toString();
+            console.log("Borrow input", s_amount, selectedToken);
             const borrowTx = pool.borrowTxBuilder.generateTxData({
                 user: selectedSafe || "",
                 reserve: selectedToken.contractAddress,
@@ -80,7 +81,7 @@ const BorrowCard = () => {
 
             console.log("txResult", txResult);
             toast.success(txResult.hash);
-            txResult ? toast.success("Successfully repayed ✅") : toast.error("Repayment Failed ❌");
+            txResult ? toast.success("Successfully Borrowed ✅") : toast.error("Transaction Failed ❌");
         }
     };
 

@@ -149,12 +149,14 @@ const Interact: NextPage = () => {
         <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={fetchContractData}>Fetch Data</button>
       </div> */}
 
-      {userDetails && <AssetBalance userDetails={userDetails} />}
 
-      <div className="flex flex-row gap-4 mx-8">
+
+      <div className="flex flex-row gap-4 mx-8 my-20">
         <SupplyCard />
         <BorrowCard />
       </div>
+
+      {userDetails && <AssetBalance userDetails={userDetails} />}
 
 
     </main>

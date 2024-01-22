@@ -8,13 +8,10 @@ const AssetDetails = ({
     console.log("Reserve", reserve);
 
     const asset = BorrowAssetToken.find((asset) => {
-        console.log("Assettttttt", asset.contractAddress.toLowerCase(), reserve.underlyingAsset.toLowerCase(), typeof (asset.contractAddress), typeof (reserve.underlyingAsset), asset.contractAddress.toLowerCase() == reserve.underlyingAsset.toLowerCase())
         if (asset.contractAddress.toLowerCase() === reserve.underlyingAsset.toLowerCase()) {
             return asset
         }
     });
-
-    console.log("Asset Image", asset);
 
     return (
         <div className='flex gap-4 items-center justify-between'>
